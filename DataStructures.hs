@@ -12,6 +12,8 @@ data Prop = Prop {
 data TensedProp = TensedProp {
     prop :: Prop
     , timeDelta :: Time -- TODO more flexible time handling to account for unspecified past, present, future, or specific times e.g. yesterday
+    , presuppositions :: [Prop] -- TODO assumes that presuppositions are always present tense / descriptions of current time
+    --TODO add a way of telling if repetition of another event
 } deriving (Show, Eq)
 
 negateProp :: Prop -> Prop
@@ -28,5 +30,6 @@ data World = World {
     , possible :: Bool -- for the purposes of this LTL model the future does NOT count as a possible world
 } deriving (Show, Eq)
 type WorldTime = (World, Time)
+type MinimalModel = [WorldTime] -- TODO would be nice to have this sorted/grouped by time
 
 now = 0  -- TODO would be nice to declare that this has type Time
