@@ -1,51 +1,12 @@
 module Main where
 
-import Data
-import Lib
-
-charlieTestYesterday = Prop {
-    content = "Charlie takes his test yesterday"
-    , negated = False
-}
-
-charlieTestTomorrow = Prop {
-    content = "Charlie takes his test tomorrow"
-    , negated = False
-}
-
-charliePass = Prop {
-    content = "Charlie passes his test"
-    , negated = False
-}
-
-charlieNotFail = Prop {
-    content = "Charlie fails his test"
-    , negated = True
-}
-
-indicativeConditional = Conditional {
-    antecedent = charlieTestTomorrow
-    , consequent = charliePass
-    , mood = Indicative
-}
-
-subjunctiveConditional = Conditional {
-    antecedent = charlieTestTomorrow
-    , consequent = charliePass
-    , mood = Subjunctive
-}
-
-pastCounterfactual = Conditional {
-    antecedent = charlieTestYesterday
-    , consequent = charliePass
-    , mood = Counterfactual
-}
-
-futureCounterfactual = Conditional {
-    antecedent = charlieTestTomorrow
-    , consequent = charliePass
-    , mood = Counterfactual
-}
+import DataStructures
+import ModelGeneration
+import Examples
 
 main :: IO ()
-main =  (putStr . show . generateModel) pastCounterfactual
+-- TODO this method is required, but put something useful in it
+-- First, look up how the IO monad works again
+main =  putStr "TODO"
+
+test = generateModel pastCounterfactual
