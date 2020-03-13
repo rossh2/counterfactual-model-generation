@@ -1,0 +1,63 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 4831903bee0eb2a27e1227b47177606db527702d3904fdc3319d2295feb80bf6
+
+name:           MinimalModel
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/Github username here/MinimalModel#readme>
+homepage:       https://github.com/Github username here/MinimalModel#readme
+bug-reports:    https://github.com/Github username here/MinimalModel/issues
+author:         Author name here
+maintainer:     Author email here
+copyright:      2019 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/Github username here/MinimalModel
+
+library
+  exposed-modules:
+      Data
+      Lib
+  other-modules:
+      Paths_MinimalModel
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable MinimalModel-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_MinimalModel
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      MinimalModel
+    , base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite MinimalModel-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_MinimalModel
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      MinimalModel
+    , base >=4.7 && <5
+  default-language: Haskell2010
