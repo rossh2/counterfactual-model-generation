@@ -5,33 +5,30 @@ module ModelGeneration
 
 import DataStructures
 
--- TODO double check conditions for presuppositions of indicative vs. types of subjunctive against Ippolito, Starr
---   What is the difference between indicative conditionals and subjunctive (non-counterfactual) conditionals? (Provided we are not dealing with repeated events)
-
 generateModel :: Conditional -> MinimalModel
-generateModel (Conditional p q Indicative False) = [ -- timeFocused = False
+generateModel (Conditional p q Indicative False) = [ -- timeContrast = False
     generateActualWorldWithPresupps p,
     generateActualWorldWithConditional p q
     ]
-generateModel (Conditional p q Indicative True) = [ -- timeFocused = True
+generateModel (Conditional p q Indicative True) = [ -- timeContrast = True
+    -- generateActualWorldWithOppositeOutcome p q, -- TODO I don't think we need this - need more data; Starr vaguely supports this
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
+    ]
+generateModel (Conditional p q Subjunctive False) = [ -- timeContrast = False
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
+    ]
+generateModel (Conditional p q Subjunctive True) = [ -- timeContrast = True
     generateActualWorldWithOppositeOutcome p q,
     generateActualWorldWithPresupps p,
     generateActualWorldWithConditional p q
     ]
-generateModel (Conditional p q Subjunctive False) = [ -- timeFocused = False
-    generateActualWorldWithPresupps p,
-    generateActualWorldWithConditional p q
-    ]
-generateModel (Conditional p q Subjunctive True) = [ -- timeFocused = True
-    generateActualWorldWithOppositeOutcome p q,
-    generateActualWorldWithPresupps p,
-    generateActualWorldWithConditional p q
-    ]
-generateModel (Conditional p q Counterfactual False) = [ -- timeFocused = False
+generateModel (Conditional p q Counterfactual False) = [ -- timeContrast = False
     generateActualWorldForCounterfactual p q,
     generateCounterfactualWorld p q
     ]
-generateModel (Conditional p q Counterfactual True) = [ -- timeFocused = True
+generateModel (Conditional p q Counterfactual True) = [ -- timeContrast = True
     generateActualWorldWithOppositeOutcome p q,
     generateCounterfactualWorld p q
     ]
@@ -52,7 +49,8 @@ generateCounterfactualWorld :: TensedProp -> TensedProp -> WorldTime
 generateCounterfactualWorld p q = (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) True, time p)
 
 
--- TODO model generation above can't handle mixed time counterfactuals where the antecedent and consequent happen at different times
+-- TODO n.B. model generation above can't handle mixed time counterfactuals where the antecedent and consequent happen at different times
+-- e.g. "If Charlie pays attention in class today, he'll pass the test tomorrow"
 --  (due to data structures being too rigid - primarily binary switch of possibility rather than allowing one possible world to have a timeline)
 validateTime :: Conditional -> Bool
-validateTime (Conditional p q mood timeFocused) = (time p) == (time q)
+validateTime (Conditional p q mood timeContrast) = (time p) == (time q)

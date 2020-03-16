@@ -39,7 +39,7 @@ data Conditional = Conditional {
     antecedent :: TensedProp
     , consequent :: TensedProp
     , mood :: Mood
-    , timeFocused :: Bool
+    , timeContrast :: Bool
 } deriving (Show, Eq)
 
 data World = World {
@@ -48,4 +48,4 @@ data World = World {
 } deriving (Show, Eq)
 
 type WorldTime = (World, Time)
-type MinimalModel = [WorldTime] -- TODO would be nice to have this structured in some way this (e.g. sorted/grouped by time)
+type MinimalModel = [WorldTime] -- TODO would be nice to have this structured in some way this (e.g. sorted/grouped by time), and pretty-printed
