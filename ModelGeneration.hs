@@ -10,34 +10,47 @@ import DataStructures
 
 generateModel :: Conditional -> MinimalModel
 generateModel (Conditional p q Indicative False) = [ -- timeFocused = False
-    (World (presuppositions p) False, Present),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) False, time p)
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
     ]
 generateModel (Conditional p q Indicative True) = [ -- timeFocused = True
-    (World ([prop p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, PastOrPresent),
-    (World (presuppositions p) False, Present),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) False, time p)
+    generateActualWorldWithOppositeOutcome p q,
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
     ]
 generateModel (Conditional p q Subjunctive False) = [ -- timeFocused = False
-    (World (presuppositions p) False, Present),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) False, time p)
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
     ]
 generateModel (Conditional p q Subjunctive True) = [ -- timeFocused = True
-    (World ([prop p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, PastOrPresent),
-    (World (presuppositions p) False, Present),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) False, time p)
+    generateActualWorldWithOppositeOutcome p q,
+    generateActualWorldWithPresupps p,
+    generateActualWorldWithConditional p q
     ]
 generateModel (Conditional p q Counterfactual False) = [ -- timeFocused = False
-    (World ([(negateProp . prop) p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, time p),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) True, time p)
+    generateActualWorldForCounterfactual p q,
+    generateCounterfactualWorld p q
     ]
 generateModel (Conditional p q Counterfactual True) = [ -- timeFocused = True
-    (World ([prop p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, PastOrPresent),
-    (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) True, time p)
+    generateActualWorldWithOppositeOutcome p q,
+    generateCounterfactualWorld p q
     ]
-    -- !!! This doesn't work: it generates the fact that Charlie does not take his test at time now and that he doesn't pass
-    -- whereas what we want is that Charlie didn't take his test at the time specified, but did take it at some other time
-    -- TODO add time focus component which causes generateModel to generate Charlie taking the test at some other (past) unknown time - will need more complex time handling for that first
+
+generateActualWorldWithPresupps :: TensedProp -> WorldTime
+generateActualWorldWithPresupps p = (World (presuppositions p) False, Present)
+
+generateActualWorldWithConditional :: TensedProp -> TensedProp -> WorldTime
+generateActualWorldWithConditional p q = (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) False, time p)
+
+generateActualWorldWithOppositeOutcome :: TensedProp -> TensedProp -> WorldTime
+generateActualWorldWithOppositeOutcome p q = (World ([prop p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, PastOrPresent)
+
+generateActualWorldForCounterfactual :: TensedProp -> TensedProp -> WorldTime
+generateActualWorldForCounterfactual p q = (World ([(negateProp . prop) p, (negateProp . prop) q] ++ presuppositions p ++ presuppositions q) False, time p)
+
+generateCounterfactualWorld :: TensedProp -> TensedProp -> WorldTime
+generateCounterfactualWorld p q = (World ([prop p, prop q] ++ presuppositions p ++ presuppositions q) True, time p)
+
 
 -- TODO model generation above can't handle mixed time counterfactuals where the antecedent and consequent happen at different times
 --  (due to data structures being too rigid - primarily binary switch of possibility rather than allowing one possible world to have a timeline)

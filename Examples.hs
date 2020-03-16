@@ -7,7 +7,7 @@ charlieCalculatorTomorrow = TensedProp {
         content = "Charlie brings his calculator"
         , negated = False
     }
-    , time = Tomorrow
+    , time = DeltaInDays 1
     , presuppositions = [
             Prop {
                 content = "Charlie owns a calculator"
@@ -21,7 +21,7 @@ charlieCalculatorYesterday = TensedProp {
         content = "Charlie brings his calculator"
         , negated = False
     }
-    , time = Yesterday
+    , time = DeltaInDays (-1)
     , presuppositions = [
             Prop {
                 content = "Charlie owns a calculator"
@@ -35,7 +35,7 @@ charlieTestYesterday = TensedProp {
         content = "Charlie takes his test"
         , negated = False
     }
-    , time = Yesterday
+    , time = DeltaInDays (-1)
     , presuppositions = [
         Prop {
             content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
@@ -49,7 +49,7 @@ charlieTestTomorrow = TensedProp {
         content = "Charlie takes his test"
         , negated = False
     }
-    , time = Tomorrow
+    , time = DeltaInDays 1
     , presuppositions = [
         Prop {
             content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
@@ -63,7 +63,7 @@ charliePassTomorrow = TensedProp {
         content = "Charlie passes his test"
         , negated = False
     }
-    , time = Tomorrow
+    , time = DeltaInDays 1
     , presuppositions = [] -- TODO this isn't true, but in fact already covered by presupp's of antecedent
 }
 
@@ -72,7 +72,7 @@ charliePassYesterday = TensedProp {
         content = "Charlie passes his test"
         , negated = False
     }
-    , time = Yesterday
+    , time = DeltaInDays (-1)
     , presuppositions = [] -- TODO this isn't true, but in fact already covered by presupp's of antecedent
 }
 
@@ -81,7 +81,7 @@ charlieNotFailTomorrow = TensedProp {
         content = "Charlie fails his test"
         , negated = False
     }
-    , time = Tomorrow
+    , time = DeltaInDays 1
     , presuppositions = [] -- TODO this isn't true, but in fact already covered by presupp's of antecedent
 }
 
