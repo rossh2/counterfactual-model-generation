@@ -59,7 +59,7 @@ negateProp (Prop content negated) = Prop content (not negated)
 data TensedProp = TensedProp {
     prop :: Prop
     , time :: Time
-    , presuppositions :: [Prop] -- TODO assumes that presuppositions are always present tense / descriptions of current time
+    , presuppositions :: [Prop] -- TODO assumes that presuppositions are always present tense / descriptions of time at which proposition holds
 } deriving (Show, Eq)
 
 data Sentence = SimpleSentence {

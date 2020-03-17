@@ -99,8 +99,8 @@ charliePassPast = TensedProp {
         content = "Charlie passes his test"
         , negated = False
     }
-    , time = PastOrPresent -- TODO required to make it clash with model generation, which doesn't understand that
-                           -- any time in past or present would clash with this (same below)
+    , time = PastOrPresent -- TODO required to make it clash with model generation from conditional/counterfactual
+                           -- which doesn't understand that any time in past or present would clash with this (same below)
     , presuppositions = []
 }
 

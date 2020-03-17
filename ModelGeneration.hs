@@ -76,7 +76,7 @@ generateActualWorldWithProp p = (time p, world)
           propsWithPresupps = addPresuppsToSet p propSet
 
 -- Convenience method, could probably be refactored to use generateActualWorldWithProp
--- TODO n.B. assumes that (time p) == (time q) so can't handle mixed time conditionals
+-- TODO Assumes that (time p) == (time q) so can't handle mixed time conditionals
 -- such as "If Charlie pays attention in class today, he'll pass the test tomorrow"
 -- Could fix this by allowing consequent to return its own world at (time q) if (time q) /= (time p), or always return two worlds and merge if same time
 generateActualWorldWithConditional :: TensedProp -> TensedProp -> (Time, World)
