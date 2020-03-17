@@ -2,6 +2,10 @@ module Examples where
 
 import DataStructures
 
+----------------------------------
+-- PROPOSITIONS (WITH METADATA) --
+----------------------------------
+
 charlieCalculatorTomorrow = TensedProp {
     prop = Prop {
         content = "Charlie brings his calculator"
@@ -58,6 +62,20 @@ charlieTestTomorrow = TensedProp {
     ]
 }
 
+charlieRetakeTestTomorrow = TensedProp {
+    prop = Prop {
+        content = "Charlie re-takes his test"
+        , negated = False
+    }
+    , time = DeltaInDays 1
+    , presuppositions = [
+        Prop {
+            content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
+            , negated = False
+        }
+    ]
+}
+
 charliePassTomorrow = TensedProp {
     prop = Prop {
         content = "Charlie passes his test"
@@ -76,10 +94,29 @@ charliePassYesterday = TensedProp {
     , presuppositions = []
 }
 
+charliePassPast = TensedProp {
+    prop = Prop {
+        content = "Charlie passes his test"
+        , negated = False
+    }
+    , time = PastOrPresent -- TODO required to make it clash with model generation, which doesn't understand that
+                           -- any time in past or present would clash with this (same below)
+    , presuppositions = []
+}
+
+charlieFailPast = TensedProp {
+      prop = Prop {
+          content = "Charlie fails his test"
+          , negated = False
+      }
+      , time = PastOrPresent
+      , presuppositions = []
+}
+
 charlieNotFailTomorrow = TensedProp {
     prop = Prop {
         content = "Charlie fails his test"
-        , negated = False
+        , negated = True
     }
     , time = DeltaInDays 1
     , presuppositions = []
@@ -88,10 +125,35 @@ charlieNotFailTomorrow = TensedProp {
 charlieNotFailYesterday = TensedProp {
     prop = Prop {
         content = "Charlie fails his test"
-        , negated = False
+        , negated = True
     }
     , time = DeltaInDays (-1)
     , presuppositions = []
+}
+
+charlieNotFailPast = TensedProp {
+    prop = Prop {
+        content = "Charlie fails his test"
+        , negated = True
+    }
+    , time = PastOrPresent
+    , presuppositions = []
+}
+
+--------------------------------
+-- SENTENCES AND CONDITIONALS --
+--------------------------------
+
+passPastSentence = SimpleSentence {
+    tprop = charliePassPast
+}
+
+failPastSentence = SimpleSentence {
+    tprop = charlieFailPast
+}
+
+notFailPastSentence = SimpleSentence {
+    tprop = charlieNotFailPast
 }
 
 -- "If Charlie brings his calculator tomorrow, Charlie will pass his test."
@@ -128,7 +190,7 @@ indicativeTimeNoFocusNotFailConditional = Conditional {
 
 -- "If Charlie re-takes his test *tomorrow*, Charlie will pass his test."
 indicativeTimeFocusPassConditional = Conditional {
-    antecedent = charlieTestTomorrow
+    antecedent = charlieRetakeTestTomorrow
     , consequent = charliePassTomorrow
     , mood = Indicative
     , timeContrast = True
@@ -136,7 +198,7 @@ indicativeTimeFocusPassConditional = Conditional {
 
 -- "If Charlie re-takes his test *tomorrow*, Charlie won't fail his test."
 indicativeTimeFocusNotFailConditional = Conditional {
-    antecedent = charlieTestTomorrow
+    antecedent = charlieRetakeTestTomorrow
     , consequent = charlieNotFailTomorrow
     , mood = Indicative
     , timeContrast = True
@@ -160,7 +222,7 @@ subjunctiveNotFailConditional = Conditional {
 
 -- "If Charlie re-took his test *tomorrow*, Charlie would pass his test."
 subjunctiveTimeFocusPassConditional = Conditional {
-    antecedent = charlieTestTomorrow
+    antecedent = charlieRetakeTestTomorrow
     , consequent = charliePassTomorrow
     , mood = Subjunctive
     , timeContrast = True
@@ -168,7 +230,7 @@ subjunctiveTimeFocusPassConditional = Conditional {
 
 -- "If Charlie re-took his test *tomorrow*, Charlie wouldn't fail his test."
 subjunctiveTimeFocusNotFailConditional = Conditional {
-    antecedent = charlieTestTomorrow
+    antecedent = charlieRetakeTestTomorrow
     , consequent = charlieNotFailTomorrow
     , mood = Subjunctive
     , timeContrast = True
