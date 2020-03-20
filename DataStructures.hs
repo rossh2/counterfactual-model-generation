@@ -45,31 +45,38 @@ instance Ord Time where
 data Prop = Prop {
     content :: String
     , negated :: Bool
+    , cancellable :: Bool
 } deriving (Eq, Ord)
+propWithDefault = Prop "" False False
 
 instance Show Prop where
-    show (Prop content False) = content
-    -- In principle, sometimes the first word of `content` should get lowercased (if not a proper noun)
-    show (Prop content True) = "Not the case that " ++ content
+    show (Prop content False cancellable) = if cancellable then content ++ " (implicature)" else content
+    show (Prop content True cancellable) = if cancellable then negatedContent ++ " (implicature)" else negatedContent
+        -- In principle, sometimes the first word of `content` should get lowercased (if not a proper noun)
+        where negatedContent = "Not the case that " ++ content
 
 negateProp :: Prop -> Prop
-negateProp (Prop content negated) = Prop content (not negated)
+negateProp (Prop content negated cancellable) = Prop content (not negated) cancellable
 
--- TODO is TensedProp the best name for this now that it includes presuppositions? It's a proposition + metadata from the sentence and lexicon
-data TensedProp = TensedProp {
+implicature :: Prop -> Prop
+implicature (Prop content negated cancellable) = Prop content negated True
+
+data ParsedProp = ParsedProp {
     prop :: Prop
     , time :: Time
     , presuppositions :: [Prop] -- TODO assumes that presuppositions are always present tense / descriptions of time at which proposition holds
 } deriving (Show, Eq)
 
 data Sentence = SimpleSentence {
-        tprop :: TensedProp
+        tprop :: ParsedProp
     } | Conditional {
-        antecedent :: TensedProp
-        , consequent :: TensedProp
+        antecedent :: ParsedProp
+        , consequent :: ParsedProp
         , mood :: Mood
         , timeContrast :: Bool
     } deriving (Show, Eq)
+
+type Discourse = [Sentence]
 
 data World = World {
     propositions :: Set.Set Prop

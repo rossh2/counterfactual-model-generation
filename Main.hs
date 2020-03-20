@@ -91,54 +91,54 @@ discourses = do
     failNotFailDiscourses
     putStrLn ""
     notFailNotFailDiscourses
+    putStrLn ""
+    passNotFailDiscourses
 
 
 failNotFailDiscourses :: IO ()
 failNotFailDiscourses = do
     putStrLn "TWO-SENTENCE DISCOURSES - FAIL vs. NOT FAIL"
-    let sentenceModel = generateModel failPastSentence
     putStrLn "Charlie failed his test. If Charlie re-takes his test tomorrow, Charlie won't fail his test."
-    let conditionalModel = generateModel indicativeTimeFocusNotFailConditional
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [failPastSentence, indicativeTimeFocusNotFailConditional]
     putStrLn ""
     putStrLn "Charlie failed his test. If Charlie re-took his test tomorrow, Charlie wouldn't fail his test."
-    let conditionalModel = generateModel subjunctiveTimeFocusNotFailConditional
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [failPastSentence, subjunctiveTimeFocusNotFailConditional]
     putStrLn ""
     putStrLn "Charlie failed his test. If Charlie had taken his test yesterday, Charlie wouldn't have failed his test."
-    let conditionalModel = generateModel pastTimeFocusNotFailCounterfactual
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [failPastSentence, pastTimeFocusNotFailCounterfactual]
     putStrLn ""
     putStrLn "Charlie failed his test. If Charlie had taken his test tomorrow, Charlie wouldn't have failed his test."
-    let conditionalModel = generateModel futureTimeFocusNotFailCounterfactual
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [failPastSentence, futureTimeFocusNotFailCounterfactual]
     putStrLn ""
 
 notFailNotFailDiscourses :: IO ()
 notFailNotFailDiscourses = do
     putStrLn "TWO-SENTENCE DISCOURSES - NOT FAIL vs. NOT FAIL"
-    let sentenceModel = generateModel notFailPastSentence
     putStrLn "Charlie didn't fail his test. If Charlie re-takes his test tomorrow, Charlie won't fail his test."
-    let conditionalModel = generateModel indicativeTimeFocusNotFailConditional
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [notFailPastSentence, indicativeTimeFocusNotFailConditional]
     putStrLn ""
     putStrLn "Charlie didn't fail his test. If Charlie re-took his test tomorrow, Charlie wouldn't fail his test."
-    let conditionalModel = generateModel subjunctiveTimeFocusNotFailConditional
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [notFailPastSentence, subjunctiveTimeFocusNotFailConditional]
     putStrLn ""
     putStrLn "Charlie didn't fail his test. If Charlie had taken his test yesterday, Charlie wouldn't have failed his test."
-    let conditionalModel = generateModel pastTimeFocusNotFailCounterfactual
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [notFailPastSentence, pastTimeFocusNotFailCounterfactual]
     putStrLn ""
     putStrLn "Charlie didn't fail his test. If Charlie had taken his test tomorrow, Charlie wouldn't have failed his test."
-    let conditionalModel = generateModel futureTimeFocusNotFailCounterfactual
-        combinedModel = combineModels (Just sentenceModel) (Just conditionalModel)
-    putStrLn $ show $ combinedModel
+    putStrLn $ show $ generateDiscourseModel [notFailPastSentence, futureTimeFocusNotFailCounterfactual]
+    putStrLn ""
+
+passNotFailDiscourses :: IO ()
+passNotFailDiscourses = do
+    putStrLn "TWO-SENTENCE DISCOURSES - PASS vs. NOT FAIL"
+    putStrLn "Charlie passed his test. If Charlie re-takes his test tomorrow, Charlie won't fail his test."
+    putStrLn $ show $ generateDiscourseModel [passPastSentence, indicativeTimeFocusNotFailConditional]
+    putStrLn ""
+    putStrLn "Charlie passed his test. If Charlie re-took his test tomorrow, Charlie wouldn't fail his test."
+    putStrLn $ show $ generateDiscourseModel [passPastSentence, subjunctiveTimeFocusNotFailConditional]
+    putStrLn ""
+    putStrLn "Charlie passed his test. If Charlie had taken his test yesterday, Charlie wouldn't have failed his test."
+    putStrLn $ show $ generateDiscourseModel [passPastSentence, pastTimeFocusNotFailCounterfactual]
+    putStrLn ""
+    putStrLn "Charlie passed his test. If Charlie had taken his test tomorrow, Charlie wouldn't have failed his test."
+    putStrLn $ show $ generateDiscourseModel [passPastSentence, futureTimeFocusNotFailCounterfactual]
     putStrLn ""

@@ -6,138 +6,154 @@ import DataStructures
 -- PROPOSITIONS (WITH METADATA) --
 ----------------------------------
 
-charlieCalculatorTomorrow = TensedProp {
-    prop = Prop {
+charlieCalculatorTomorrow = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie brings his calculator"
-        , negated = False
     }
     , time = DeltaInDays 1
     , presuppositions = [
-            Prop {
+            propWithDefault {
                 content = "Charlie owns a calculator"
-                , negated = False
             }
         ]
 }
 
-charlieCalculatorYesterday = TensedProp {
-    prop = Prop {
+charlieCalculatorYesterday = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie brings his calculator"
-        , negated = False
     }
     , time = DeltaInDays (-1)
     , presuppositions = [
-            Prop {
+            propWithDefault {
                 content = "Charlie owns a calculator"
-                , negated = False
             }
         ]
 }
 
-charlieTestYesterday = TensedProp {
-    prop = Prop {
+charlieTestYesterday = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie takes his test"
-        , negated = False
     }
     , time = DeltaInDays (-1)
     , presuppositions = [
-        Prop {
+        propWithDefault {
             content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
             , negated = True
         }
     ]
 }
 
-charlieTestTomorrow = TensedProp {
-    prop = Prop {
+charlieTestTomorrow = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie takes his test"
-        , negated = False
     }
     , time = DeltaInDays 1
     , presuppositions = [
-        Prop {
+        propWithDefault {
             content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
             , negated = True
         }
     ]
 }
 
-charlieRetakeTestTomorrow = TensedProp {
-    prop = Prop {
-        content = "Charlie re-takes his test"
-        , negated = False
-    }
+charlieRetakeTestTomorrow = ParsedProp {
+    prop = propWithDefault {
+        content = "Charlie takes his test" -- This gets used for both the first and second test-taking in the model,
+    }                                      -- so can't say "re-take", but it's there in the presupposition
     , time = DeltaInDays 1
     , presuppositions = [
-        Prop {
+        propWithDefault {
             content = "Charlie has taken his test" -- n.B. treat perfective aspect as not a tense / not related to time
-            , negated = False
         }
     ]
 }
 
-charliePassTomorrow = TensedProp {
-    prop = Prop {
+charliePassTomorrow = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie passes his test"
-        , negated = False
     }
     , time = DeltaInDays 1
-    , presuppositions = [] -- TODO this isn't strictly true, but in fact already covered by presupp's of antecedent (same for all consequents below)
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charliePassYesterday = TensedProp {
-    prop = Prop {
+charliePassYesterday = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie passes his test"
-        , negated = False
     }
     , time = DeltaInDays (-1)
-    , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charliePassPast = TensedProp {
-    prop = Prop {
+charliePassPast = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie passes his test"
-        , negated = False
     }
     , time = PastOrPresent -- TODO required to make it clash with model generation from conditional/counterfactual
                            -- which doesn't understand that any time in past or present would clash with this (same below)
-    , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charlieFailPast = TensedProp {
-      prop = Prop {
+charlieFailPast = ParsedProp {
+      prop = propWithDefault {
           content = "Charlie fails his test"
-          , negated = False
       }
       , time = PastOrPresent
-      , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charlieNotFailTomorrow = TensedProp {
-    prop = Prop {
+charlieNotFailTomorrow = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie fails his test"
         , negated = True
     }
     , time = DeltaInDays 1
-    , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charlieNotFailYesterday = TensedProp {
-    prop = Prop {
+charlieNotFailYesterday = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie fails his test"
         , negated = True
     }
     , time = DeltaInDays (-1)
-    , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
-charlieNotFailPast = TensedProp {
-    prop = Prop {
+charlieNotFailPast = ParsedProp {
+    prop = propWithDefault {
         content = "Charlie fails his test"
         , negated = True
     }
     , time = PastOrPresent
-    , presuppositions = []
+    , presuppositions = [
+        propWithDefault {
+            content = "Charlie takes his test"
+        }
+    ]
 }
 
 --------------------------------

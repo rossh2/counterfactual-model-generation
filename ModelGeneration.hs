@@ -1,5 +1,6 @@
 module ModelGeneration
     ( generateModel
+    , generateDiscourseModel
     , combineModels
     ) where
 
@@ -10,6 +11,10 @@ import DataStructures
 ----------------------
 -- MODEL GENERATION --
 ----------------------
+
+generateDiscourseModel :: Discourse -> Maybe MinimalModel
+generateDiscourseModel [] = Just (MinimalModel { actualWorlds = Map.empty, possibleWorlds = Map.empty })
+generateDiscourseModel (x:xs) = combineModels (Just (generateModel x)) (generateDiscourseModel xs)
 
 generateModel :: Sentence -> MinimalModel
 generateModel (SimpleSentence p) = MinimalModel {
@@ -65,11 +70,11 @@ generateModel (Conditional p q Counterfactual True) = MinimalModel { -- timeCont
         ]
     }
 
-generateActualWorldWithPresupps :: TensedProp -> (Time, World)
+generateActualWorldWithPresupps :: ParsedProp -> (Time, World)
 generateActualWorldWithPresupps p = (Present, world)
     where world = World (Set.fromList (presuppositions p)) False
 
-generateActualWorldWithProp :: TensedProp -> (Time, World)
+generateActualWorldWithProp :: ParsedProp -> (Time, World)
 generateActualWorldWithProp p = (time p, world)
     where world = World propsWithPresupps False
           propSet = Set.fromList [prop p]
@@ -79,33 +84,32 @@ generateActualWorldWithProp p = (time p, world)
 -- TODO Assumes that (time p) == (time q) so can't handle mixed time conditionals
 -- such as "If Charlie pays attention in class today, he'll pass the test tomorrow"
 -- Could fix this by allowing consequent to return its own world at (time q) if (time q) /= (time p), or always return two worlds and merge if same time
-generateActualWorldWithConditional :: TensedProp -> TensedProp -> (Time, World)
+generateActualWorldWithConditional :: ParsedProp -> ParsedProp -> (Time, World)
 generateActualWorldWithConditional p q = (time p, world)
     where world = World propsWithPresupps False
           propSet = Set.fromList [prop p, prop q]
           propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
 
-generateActualWorldWithOppositeOutcome :: TensedProp -> TensedProp -> (Time, World)
+generateActualWorldWithOppositeOutcome :: ParsedProp -> ParsedProp -> (Time, World)
 generateActualWorldWithOppositeOutcome p q = (PastOrPresent, world)
     where world = World propsWithPresupps False
-          propSet = Set.fromList [prop p, (negateProp . prop) q]
+          propSet = Set.fromList [prop p, (implicature . negateProp . prop) q]
           -- TODO Assumes that presuppositions of (not p) same as presuppositions of p (not true of special cases like "didn't fail"), see also below
-          -- TODO treats (not q) as fact rather than implicature that can be cancelled (also for counterfactual below)
           propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
 
-generateActualWorldForCounterfactual :: TensedProp -> TensedProp -> (Time, World)
+generateActualWorldForCounterfactual :: ParsedProp -> ParsedProp -> (Time, World)
 generateActualWorldForCounterfactual p q = (time p, world)
     where world = World propsWithPresupps False
-          propSet = Set.fromList [(negateProp . prop) p, (negateProp . prop) q]
+          propSet = Set.fromList [(implicature . negateProp . prop) p, (implicature . negateProp . prop) q]
           propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
 
-generateCounterfactualWorld :: TensedProp -> TensedProp -> (Time, World)
+generateCounterfactualWorld :: ParsedProp -> ParsedProp -> (Time, World)
 generateCounterfactualWorld p q = (time p, world)
     where world = World propsWithPresupps True
           propSet = Set.fromList [prop p, prop q]
           propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
 
-addPresuppsToSet :: TensedProp -> Set.Set Prop -> Set.Set Prop
+addPresuppsToSet :: ParsedProp -> Set.Set Prop -> Set.Set Prop
 addPresuppsToSet p props = foldr Set.insert props (presuppositions p)
 
 -----------------------
@@ -142,5 +146,13 @@ combineWorlds (Just w) (Just v) = if possible w /= possible v then Nothing else 
 
 addProp :: Prop -> Maybe (Set.Set Prop) -> Maybe (Set.Set Prop)
 addProp q Nothing = Nothing
--- If (not q) is not in the set already, it's safe to add q, otherwise return Nothing
-addProp q (Just ps) = if Set.notMember (Prop (content q) ((not . negated) q)) ps then Just (Set.insert q ps) else Nothing
+addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
+                      else if cancelExisting then Just (Set.insert q newPs)
+                      else if nothingToDo then Just ps
+                      else Nothing
+    where matching = Set.filter (\p -> content p == content q) ps
+          --inconsistent = Set.size matching > 1 -- If the set of props is consistent (built by this method), there is at most one match.
+          safeToAdd = null matching
+          cancelExisting = if not safeToAdd then cancellable (Set.elemAt 0 matching) else False -- && not inconsistent
+          nothingToDo = if not safeToAdd then (Set.elemAt 0 matching) == q || (cancellable q && not cancelExisting) else False
+          newPs = if cancelExisting then Set.delete (Set.elemAt 0 matching) ps else ps
