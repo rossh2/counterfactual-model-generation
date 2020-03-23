@@ -1,37 +1,78 @@
-module Grammar
-    ( Sent , NP , VP , VPAdjunct
-    , getVerbForms
-    , getAdjuncts
-    ) where
+module Grammar where
 
+import qualified Data.Char as Char
+
+import Features
 import Lexicon
+import TypeClasses
 
 -- Grammar
--- TODO this way of encoding conditionals is very brittle, relies on "if" being only C
-data Sent = Sent1 NP VP | Sent2 C Sent Sent deriving Show
-data NP = NP1 D N | NP2 ProperN deriving Show
-data VP = VP1 V | VP2 V N | VP3 Neg VP | VP4 Aux VP | VP5 VP VPAdjunct deriving Show
-data VPAdjunct = VPAdjunct AdverbialN deriving Show
+data SentTree = Sent1 TP | Sent2 C TP TP deriving (Show, Eq)
+data TP = TP NP VP deriving (Show, Eq)
+data NP = NP1 D N | NP2 ProperN deriving (Show, Eq)
+data VP = VP1 V | VP2 V NP | VP3 Neg VP | VP4 Aux VP | VP5 VP VPAdjunct deriving (Show, Eq)
+data VPAdjunct = VPA1 AdverbialN | VPA2 Adverb deriving (Show, Eq)
 
--- Utility methods
-getVerbForms :: Sent -> [VerbForm]
-getVerbForms (Sent1 np vp) = getVerbFormsVP vp
-getVerbForms (Sent2 c s1 s2) = getVerbForms s1 ++ getVerbForms s2
+instance ShowLinear SentTree where
+    showLin (Sent1 tp) = capitalizeFirstLetter (showLin tp) ++ "."
+    showLin (Sent2 c tp1 tp2) = capitalizeFirstLetter (showLin c) ++ " " ++ showLin tp1 ++ ", " ++ showLin tp2 ++ "."
+    showLinList [] = ""
+    showLinList (x:xs) = showLin x ++ " " ++ showLinList xs
+instance ShowLinear TP where
+    showLin (TP np vp) = showLin np ++ " " ++ showLin vp
+instance ShowLinear NP where
+    showLin (NP1 d n) = showLin d ++ " " ++ showLin n
+    showLin (NP2 pn) = showLin pn
+instance ShowLinear VP where
+    showLin (VP1 v) = showLin v
+    showLin (VP2 v n) = showLin v ++ " " ++ showLin n
+    showLin (VP3 neg vp) = showLin neg ++ " " ++ showLin vp
+    showLin (VP4 aux vp) = showLin aux ++ " " ++ showLin vp
+    showLin (VP5 vp adj) = showLin vp ++ " " ++ showLin adj
+instance ShowLinear VPAdjunct where
+    showLin (VPA1 advN) = showLin advN
+    showLin (VPA2 adv) = showLin adv
 
-getVerbFormsVP :: VP -> [VerbForm]
-getVerbFormsVP (VP1 v) = [vForm v]
-getVerbFormsVP (VP2 v n) = [vForm v]
-getVerbFormsVP (VP3 neg vp) = getVerbFormsVP vp
-getVerbFormsVP (VP4 aux vp) = (auxForm aux) : (getVerbFormsVP vp)
-getVerbFormsVP (VP5 vp adjunct) = getVerbFormsVP vp
+capitalizeFirstLetter :: String -> String
+capitalizeFirstLetter [] = []
+capitalizeFirstLetter (c:cs) = Char.toUpper c : cs
 
-getAdjuncts :: Sent -> [VPAdjunct]
-getAdjuncts (Sent1 np vp) = getAdjunctsVP vp
-getAdjuncts (Sent2 c s1 s2) = getAdjuncts s1 ++ getAdjuncts s2
+-- Utility methods over recursive VPs and adjuncts
+getRootV :: VP -> V
+getRootV (VP1 v) = v
+getRootV (VP2 v np) = v
+getRootV (VP3 neg vp) = getRootV vp
+getRootV (VP4 aux vp) = getRootV vp
+getRootV (VP5 vp adjunct) = getRootV vp
 
-getAdjunctsVP :: VP -> [VPAdjunct]
-getAdjunctsVP (VP1 v) = []
-getAdjunctsVP (VP2 v n) = []
-getAdjunctsVP (VP3 neg vp) = getAdjunctsVP vp
-getAdjunctsVP (VP4 aux vp) = getAdjunctsVP vp
-getAdjunctsVP (VP5 vp adjunct) = (getAdjunctsVP vp) ++ [adjunct]
+isVPNegated :: VP -> Bool
+isVPNegated (VP1 v) = False
+isVPNegated (VP2 v np) = False
+isVPNegated (VP3 neg vp) = not (isVPNegated vp) -- Use simple classical logic for double negations
+isVPNegated (VP4 aux vp) = isVPNegated vp
+isVPNegated (VP5 vp adjunct) = isVPNegated vp
+
+getVerbForms :: VP -> [VerbForm]
+getVerbForms (VP1 v) = [vForm v]
+getVerbForms (VP2 v np) = [vForm v]
+getVerbForms (VP3 neg vp) = getVerbForms vp
+getVerbForms (VP4 aux vp) = (auxForm aux) : (getVerbForms vp)
+getVerbForms (VP5 vp adjunct) = getVerbForms vp
+
+getAuxEffects :: VP -> [AuxEffect]
+getAuxEffects (VP1 v) = []
+getAuxEffects (VP2 v np) = []
+getAuxEffects (VP3 neg vp) = getAuxEffects vp
+getAuxEffects (VP4 aux vp) = (auxEffect aux) : (getAuxEffects vp)
+getAuxEffects (VP5 vp adjunct) = getAuxEffects vp
+
+getAdjuncts :: VP -> [VPAdjunct]
+getAdjuncts (VP1 v) = []
+getAdjuncts (VP2 v np) = []
+getAdjuncts (VP3 neg vp) = getAdjuncts vp
+getAdjuncts (VP4 aux vp) = getAdjuncts vp
+getAdjuncts (VP5 vp adjunct) = (getAdjuncts vp) ++ [adjunct]
+
+getAdjunctHead :: VPAdjunct -> String
+getAdjunctHead (VPA1 advN) = advNHead advN
+getAdjunctHead (VPA2 adv) = advHead adv

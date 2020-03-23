@@ -1,19 +1,19 @@
-module Time
-    ( Time
-    ) where
+module Times where
+
+import TypeClasses
 
 data Time = Past | PastOrPresent | Present | Future | DeltaInDays Int -- Delta from Present, e.g. -1 for yesterday, +1 for tomorrow
     -- in LTL: Past = \exists t < t_0, PastOrPresent = \exists t <= t_0, Present = t_0, Future = \exists t > t_0
-    deriving (Eq) -- Ord, Show declared below
+    deriving (Show, Eq) -- Ord declared below
 
-instance Show Time where
-    show Past = "Past"
-    show PastOrPresent = "Past or Present"
-    show Present = "Present"
-    show Future = "Future"
-    show (DeltaInDays 1) = "Tomorrow"
-    show (DeltaInDays (-1)) = "Yesterday"
-    show (DeltaInDays n) = if n > 0 then (dayOrDays n) ++ " from today" else (dayOrDays (-n)) ++ " ago"
+instance ShowLinear Time where
+    showLin Past = "Past"
+    showLin PastOrPresent = "Past or Present"
+    showLin Present = "Present"
+    showLin Future = "Future"
+    showLin (DeltaInDays 1) = "Tomorrow"
+    showLin (DeltaInDays (-1)) = "Yesterday"
+    showLin (DeltaInDays n) = if n > 0 then (dayOrDays n) ++ " from today" else (dayOrDays (-n)) ++ " ago"
 
 dayOrDays :: Int -> String
 dayOrDays n = if n == 1 then "1 day" else (show n) ++ " days"

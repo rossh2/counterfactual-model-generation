@@ -6,69 +6,78 @@ module ModelGeneration
 
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
+
 import DataStructures
+import Features
+import ModelStructures
+import Times
 
 ----------------------
 -- MODEL GENERATION --
 ----------------------
 
-generateDiscourseModel :: Discourse -> Maybe MinimalModel
+generateDiscourseModel :: ParsedDiscourse -> Maybe MinimalModel
 generateDiscourseModel [] = Just (MinimalModel { actualWorlds = Map.empty, possibleWorlds = Map.empty })
 generateDiscourseModel (x:xs) = combineModels (Just (generateModel x)) (generateDiscourseModel xs)
 
-generateModel :: Sentence -> MinimalModel
-generateModel (SimpleSentence p) = MinimalModel {
+generateModel :: ParsedSentence -> MinimalModel
+generateModel (ParsedSimpleSentence p) = MinimalModel {
     actualWorlds = Map.fromList [
         generateActualWorldWithProp p
         ]
     , possibleWorlds = Map.empty
     }
-generateModel (Conditional p q Indicative False) = MinimalModel { -- timeContrast = False
-    actualWorlds = Map.fromList [
-        generateActualWorldWithPresupps p
-        , generateActualWorldWithConditional p q
-        ]
-    , possibleWorlds = Map.empty
-    }
-generateModel (Conditional p q Indicative True) = MinimalModel { -- timeContrast = True
-    actualWorlds = Map.fromList [
-        -- generateActualWorldWithOppositeOutcome p q -- TODO I don't think we need this - need more data; Starr vaguely supports this
-        generateActualWorldWithPresupps p
-        , generateActualWorldWithConditional p q
-        ]
-    , possibleWorlds = Map.empty
-    }
-generateModel (Conditional p q Subjunctive False) = MinimalModel { -- timeContrast = False
-    actualWorlds = Map.fromList [
-        generateActualWorldWithPresupps p
-        , generateActualWorldWithConditional p q
-        ]
-    , possibleWorlds = Map.empty
-    }
-generateModel (Conditional p q Subjunctive True) = MinimalModel { -- timeContrast = True
-    actualWorlds = Map.fromList [
-        generateActualWorldWithOppositeOutcome p q
-        , generateActualWorldWithPresupps p
-        , generateActualWorldWithConditional p q
-        ]
-    , possibleWorlds = Map.empty
-    }
-generateModel (Conditional p q Counterfactual False) = MinimalModel { -- timeContrast = False
-    actualWorlds = Map.fromList [
-        generateActualWorldForCounterfactual p q
-        ]
-    , possibleWorlds = Map.fromList [
-        generateCounterfactualWorld p q
-        ]
-    }
-generateModel (Conditional p q Counterfactual True) = MinimalModel { -- timeContrast = True
-    actualWorlds = Map.fromList [
-        generateActualWorldWithOppositeOutcome p q
-        ]
-    , possibleWorlds = Map.fromList [
-        generateCounterfactualWorld p q
-        ]
-    }
+generateModel (ParsedConditional p q False sentTree) = case conditionalMood of -- timeContrast = False
+        Indicative -> MinimalModel {
+            actualWorlds = Map.fromList [
+                generateActualWorldWithPresupps p
+                , generateActualWorldWithConditional p q
+                ]
+            , possibleWorlds = Map.empty
+            }
+        Subjunctive -> MinimalModel {
+            actualWorlds = Map.fromList [
+                generateActualWorldWithPresupps p
+                , generateActualWorldWithConditional p q
+                ]
+            , possibleWorlds = Map.empty
+            }
+        Counterfactual -> MinimalModel {
+            actualWorlds = Map.fromList [
+                generateActualWorldForCounterfactual p q
+                ]
+            , possibleWorlds = Map.fromList [
+                generateCounterfactualWorld p q
+                ]
+            }
+    where conditionalMood = mood q
+generateModel (ParsedConditional p q True sentTree) = case conditionalMood of -- timeContrast = True
+        Indicative -> MinimalModel { -- timeContrast = True
+            actualWorlds = Map.fromList [
+                -- generateActualWorldWithOppositeOutcome p q -- TODO I don't think we need this - need more data; Starr vaguely supports this
+                generateActualWorldWithPresupps p
+                , generateActualWorldWithConditional p q
+                ]
+            , possibleWorlds = Map.empty
+            }
+        Subjunctive -> MinimalModel { -- timeContrast = True
+            actualWorlds = Map.fromList [
+                generateActualWorldWithOppositeOutcome p q
+                , generateActualWorldWithPresupps p
+                , generateActualWorldWithConditional p q
+                ]
+            , possibleWorlds = Map.empty
+            }
+        Counterfactual -> MinimalModel { -- timeContrast = True
+            actualWorlds = Map.fromList [
+                generateActualWorldWithOppositeOutcome p q
+                ]
+            , possibleWorlds = Map.fromList [
+                generateCounterfactualWorld p q
+                ]
+            }
+    where conditionalMood = mood q
+
 
 generateActualWorldWithPresupps :: ParsedProp -> (Time, World)
 generateActualWorldWithPresupps p = (Present, world)
@@ -91,7 +100,7 @@ generateActualWorldWithConditional p q = (time p, world)
           propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
 
 generateActualWorldWithOppositeOutcome :: ParsedProp -> ParsedProp -> (Time, World)
-generateActualWorldWithOppositeOutcome p q = (PastOrPresent, world)
+generateActualWorldWithOppositeOutcome p q = (Past, world)
     where world = World propsWithPresupps False
           propSet = Set.fromList [prop p, (implicature . negateProp . prop) q]
           -- TODO Assumes that presuppositions of (not p) same as presuppositions of p (not true of special cases like "didn't fail"), see also below
