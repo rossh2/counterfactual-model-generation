@@ -46,25 +46,61 @@ extractTP (Sent1 tp) = tp
 extractTP (Sent2 c tp1 tp2) = tp1 -- dummy implementation
 
 -- Indicative
-ifCharlieBringsHisCalculatorTomorrowCharlieWillPass = (Sent2 ifC (extractTP charlieBringsHisCalculatorTomorrow) (extractTP charlieWillPassTheTest))
-ifCharlieBringsHisCalculatorTomorrowCharlieWillNotFail = (Sent2 ifC (extractTP charlieBringsHisCalculatorTomorrow) (extractTP charlieWillNotFailTheTest))
-ifCharlieTakesTheTestTomorrowCharlieWillPass = (Sent2 ifC (extractTP charlieTakesTheTestTomorrow) (extractTP charlieWillPassTheTest))
-ifCharlieTakesTheTestTomorrowCharlieWillNotFail = (Sent2 ifC (extractTP charlieTakesTheTestTomorrow) (extractTP charlieWillNotFailTheTest))
-ifCharlieRetakesTheTestTomorrowCharlieWillPass = (Sent2 ifC (extractTP charlieRetakesTheTestTomorrow) (extractTP charlieWillPassTheTest))
-ifCharlieRetakesTheTestTomorrowCharlieWillNotFail = (Sent2 ifC (extractTP charlieRetakesTheTestTomorrow) (extractTP charlieWillNotFailTheTest))
+ifCharlieBringsHisCalculatorTomorrowCharlieWillPass = (Sent2 ifC
+    (extractTP charlieBringsHisCalculatorTomorrow)
+    (extractTP charlieWillPassTheTest))
+ifCharlieBringsHisCalculatorTomorrowCharlieWillNotFail = (Sent2 ifC
+    (extractTP charlieBringsHisCalculatorTomorrow)
+    (extractTP charlieWillNotFailTheTest))
+ifCharlieTakesTheTestTomorrowCharlieWillPass = (Sent2 ifC
+    (extractTP charlieTakesTheTestTomorrow)
+    (extractTP charlieWillPassTheTest))
+ifCharlieTakesTheTestTomorrowCharlieWillNotFail = (Sent2 ifC
+    (extractTP charlieTakesTheTestTomorrow)
+    (extractTP charlieWillNotFailTheTest))
+ifCharlieRetakesTheTestTomorrowCharlieWillPass = (Sent2 ifC
+    (extractTP charlieRetakesTheTestTomorrow)
+    (extractTP charlieWillPassTheTest))
+ifCharlieRetakesTheTestTomorrowCharlieWillNotFail = (Sent2 ifC
+    (extractTP charlieRetakesTheTestTomorrow)
+    (extractTP charlieWillNotFailTheTest))
 
 -- Subjunctive
-ifCharlieBroughtHisCalculatorTomorrowCharlieWouldPass = (Sent2 ifC (extractTP charlieBroughtHisCalculatorTomorrow) (extractTP charlieWouldPassTheTest))
-ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotFail = (Sent2 ifC (extractTP charlieBroughtHisCalculatorTomorrow) (extractTP charlieWouldNotFailTheTest))
-ifCharlieTookTheTestTomorrowCharlieWouldPass = (Sent2 ifC (extractTP charlieTookTheTestTomorrow) (extractTP charlieWouldPassTheTest))
-ifCharlieTookTheTestTomorrowCharlieWouldNotFail = (Sent2 ifC (extractTP charlieTookTheTestTomorrow) (extractTP charlieWouldNotFailTheTest))
-ifCharlieRetookTheTestTomorrowCharlieWouldPass = (Sent2 ifC (extractTP charlieRetookTheTestTomorrow) (extractTP charlieWouldPassTheTest))
-ifCharlieRetookTheTestTomorrowCharlieWillNotFail = (Sent2 ifC (extractTP charlieRetookTheTestTomorrow) (extractTP charlieWouldNotFailTheTest))
+ifCharlieBroughtHisCalculatorTomorrowCharlieWouldPass = (Sent2 ifC
+    (extractTP charlieBroughtHisCalculatorTomorrow)
+    (extractTP charlieWouldPassTheTest))
+ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotFail = (Sent2 ifC
+    (extractTP charlieBroughtHisCalculatorTomorrow)
+    (extractTP charlieWouldNotFailTheTest))
+ifCharlieTookTheTestTomorrowCharlieWouldPass = (Sent2 ifC
+    (extractTP charlieTookTheTestTomorrow)
+    (extractTP charlieWouldPassTheTest))
+ifCharlieTookTheTestTomorrowCharlieWouldNotFail = (Sent2 ifC
+    (extractTP charlieTookTheTestTomorrow)
+    (extractTP charlieWouldNotFailTheTest))
+ifCharlieRetookTheTestTomorrowCharlieWouldPass = (Sent2 ifC
+    (extractTP charlieRetookTheTestTomorrow)
+    (extractTP charlieWouldPassTheTest))
+ifCharlieRetookTheTestTomorrowCharlieWillNotFail = (Sent2 ifC
+    (extractTP charlieRetookTheTestTomorrow)
+    (extractTP charlieWouldNotFailTheTest))
 
 -- Counterfactual
-ifCharlieHadBroughtHisCalculatorYesterdayCharlieWouldHavePassed = (Sent2 ifC (extractTP charlieHadBroughtHisCalculatorYesterday) (extractTP charlieWouldHavePassedTheTest))
-ifCharlieHadBroughtHisCalculatorYesterdayCharlieWouldNotHaveFailed = (Sent2 ifC (extractTP charlieHadBroughtHisCalculatorYesterday) (extractTP charlieWouldNotHaveFailedTheTest))
-ifCharlieHadTakenTheTestYesterdayCharlieWouldHavePassed = (Sent2 ifC (extractTP charlieHadTakenTheTestYesterday) (extractTP charlieWouldHavePassedTheTest))
-ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHaveFailed = (Sent2 ifC (extractTP charlieHadTakenTheTestYesterday) (extractTP charlieWouldNotHaveFailedTheTest))
-ifCharlieHadTakenTheTestTomorrowCharlieWouldHavePassed = (Sent2 ifC (extractTP charlieHadTakenTheTestTomorrow) (extractTP charlieWouldHavePassedTheTest))
-ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHaveFailed = (Sent2 ifC (extractTP charlieHadTakenTheTestTomorrow) (extractTP charlieWouldNotHaveFailedTheTest))
+ifCharlieHadBroughtHisCalculatorYesterdayCharlieWouldHavePassed = (Sent2 ifC
+    (extractTP charlieHadBroughtHisCalculatorYesterday)
+    (extractTP charlieWouldHavePassedTheTest))
+ifCharlieHadBroughtHisCalculatorYesterdayCharlieWouldNotHaveFailed = (Sent2 ifC
+    (extractTP charlieHadBroughtHisCalculatorYesterday)
+    (extractTP charlieWouldNotHaveFailedTheTest))
+ifCharlieHadTakenTheTestYesterdayCharlieWouldHavePassed = (Sent2 ifC
+    (extractTP charlieHadTakenTheTestYesterday)
+    (extractTP charlieWouldHavePassedTheTest))
+ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHaveFailed = (Sent2 ifC
+    (extractTP charlieHadTakenTheTestYesterday)
+    (extractTP charlieWouldNotHaveFailedTheTest))
+ifCharlieHadTakenTheTestTomorrowCharlieWouldHavePassed = (Sent2 ifC
+    (extractTP charlieHadTakenTheTestTomorrow)
+    (extractTP charlieWouldHavePassedTheTest))
+ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHaveFailed = (Sent2 ifC
+    (extractTP charlieHadTakenTheTestTomorrow)
+    (extractTP charlieWouldNotHaveFailedTheTest))

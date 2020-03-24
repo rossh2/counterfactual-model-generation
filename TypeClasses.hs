@@ -2,7 +2,8 @@ module TypeClasses where
 
 -- Unlike Show, which should return a Haskell-compatible string,  this is designed to take a lexicon item,
 -- proposition or syntactic tree and return the linearized constituent/sentence.
--- It can also be used for pretty-printing any items that contain trees or propositions
+-- It can also be used for pretty-printing any items that contain trees or propositions.
+-- A separate function for lists is given so that any class can override it (e.g. printing multiple sentences).
 class ShowLinear a where
     showLin :: a -> String
     showLinList :: [a] -> String

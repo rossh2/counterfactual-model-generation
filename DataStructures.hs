@@ -21,7 +21,7 @@ data Event = Event {
 
 instance ShowLinear Event where
     -- This is a bit rough and ready as it uses the verb root when parsed, which does not agree with 3Sg
-    showLin e = (agent e) ++ " " ++ (predicate e) ++ " " ++ showArguments
+    showLin e = agent e ++ " " ++ predicate e ++ " " ++ showArguments
         where showArguments = (unwords . arguments) e
 
 data Prop = Prop {

@@ -21,7 +21,7 @@ verbFormsToTime [FutureEffect] [Modal, Inf] = Just Future
 verbFormsToTime [Perfect] [EnEd] = Just Past -- Perfective aspect has no effect on plain LTL logic
 verbFormsToTime [Perfect] [PastTense, EnEd] = Just Past -- for "had brought"
 verbFormsToTime [Possible] [Modal, Inf] = Just Future -- unclear how to map possibility to time, but "would do" only compatible with future adverbs
-verbFormsToTime [Possible, Perfect] [Modal, Inf, EnEd] = Just PastOrPresent -- TODO "would have done" appears to be compatible with all times so this is a dummy value
+verbFormsToTime [Possible, Perfect] [Modal, Inf, EnEd] = Just PastOrPresent -- TODO "would have done" appears to be compatible with all times so this represents an unknown value
 verbFormsToTime [NoEffect] xs = verbFormsToTime [] xs
 verbFormsToTime _ _ = Nothing -- Ungrammatical combination
 

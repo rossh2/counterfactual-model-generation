@@ -56,14 +56,14 @@ getVerbForms :: VP -> [VerbForm]
 getVerbForms (VP1 v) = [vForm v]
 getVerbForms (VP2 v np) = [vForm v]
 getVerbForms (VP3 neg vp) = getVerbForms vp
-getVerbForms (VP4 aux vp) = (auxForm aux) : (getVerbForms vp)
+getVerbForms (VP4 aux vp) = auxForm aux : getVerbForms vp
 getVerbForms (VP5 vp adjunct) = getVerbForms vp
 
 getAuxEffects :: VP -> [AuxEffect]
 getAuxEffects (VP1 v) = []
 getAuxEffects (VP2 v np) = []
 getAuxEffects (VP3 neg vp) = getAuxEffects vp
-getAuxEffects (VP4 aux vp) = (auxEffect aux) : (getAuxEffects vp)
+getAuxEffects (VP4 aux vp) = auxEffect aux : getAuxEffects vp
 getAuxEffects (VP5 vp adjunct) = getAuxEffects vp
 
 getAdjuncts :: VP -> [VPAdjunct]
@@ -71,7 +71,7 @@ getAdjuncts (VP1 v) = []
 getAdjuncts (VP2 v np) = []
 getAdjuncts (VP3 neg vp) = getAdjuncts vp
 getAdjuncts (VP4 aux vp) = getAdjuncts vp
-getAdjuncts (VP5 vp adjunct) = (getAdjuncts vp) ++ [adjunct]
+getAdjuncts (VP5 vp adjunct) = getAdjuncts vp ++ [adjunct]
 
 getAdjunctHead :: VPAdjunct -> String
 getAdjunctHead (VPA1 advN) = advNHead advN

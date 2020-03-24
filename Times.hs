@@ -20,8 +20,9 @@ dayOrDays n = if n == 1 then "1 day" else (show n) ++ " days"
 
 instance Ord Time where
     (<=) Past            t               = True
-    -- It's not clear where PastOrPresent should sit, but for the purpose of this ordering imagine that it sits a tiny delta of time before the present
-    -- So any definitely past time is earlier than it, but the (definitely) present is later than it, and no definite time is equal to it
+    -- It's not clear where PastOrPresent should sit, but for the purpose of this ordering imagine that it sits
+    -- a tiny delta of time before the present. So any definitely past time is earlier than it,
+    -- but the (definitely) present is later than it, and no definite time is equal to it.
     (<=) PastOrPresent   Past            = False
     (<=) PastOrPresent   PastOrPresent   = True
     (<=) PastOrPresent   Present         = True

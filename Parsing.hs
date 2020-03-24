@@ -85,8 +85,6 @@ parseArguments (VP5 vp adj) = parseArguments vp
 
 parseTime :: VP -> Maybe Time
 -- Assume temporal adverb supersedes tense, don't validate if they match (they won't anyway for mismatched past counterfactuals)
--- If consequent time is PastOrPresent (i.e. it's a counterfactual and we can't identify the time)
--- take the time from the antecedent later once both parsed
 parseTime vp = if not (null adjunctTimes) then
                     if length adjunctTimes == 1 then Just (head adjunctTimes) else Nothing
                else tenseTime
@@ -109,7 +107,7 @@ parseTimeContrast (TP np vp) stressedWords = repetition || temporalAdverbStresse
           temporalAdverbStressed = (not . null) (List.intersect temporalAdjunctHeads stressedWords)
 
 getTemporalAdjunctHeads :: VP -> [String]
-getTemporalAdjunctHeads vp = map getAdjunctHead (filter isTemporalAdj (getAdjuncts vp))
+getTemporalAdjunctHeads vp = map getAdjunctHead $ filter isTemporalAdj $ getAdjuncts vp
 
 isTemporalAdj :: VPAdjunct -> Bool
 isTemporalAdj (VPA1 advN) = True -- TODO All adverbial Ns in the lexicon are currently temporal - do non-temporal ones exist?
