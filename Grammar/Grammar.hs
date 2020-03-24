@@ -1,10 +1,10 @@
-module Grammar where
+module Grammar.Grammar where
 
 import qualified Data.Char as Char
 
-import Features
-import Lexicon
-import TypeClasses
+import Grammar.Features
+import Grammar.Lexicon
+import Utils.TypeClasses
 
 -- Grammar
 data SentTree = Sent1 TP | Sent2 C TP TP deriving (Show, Eq)

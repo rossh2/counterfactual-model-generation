@@ -1,14 +1,13 @@
-module Lexicon where
+module Grammar.Lexicon where
 
-import Features
-import Times
-import TypeClasses
+import Grammar.Features
+import Utils.TypeClasses
 
 
 -- This could be extended to have subcat frames on verbs easily, but would need something to validate them
 data N = N { nHead :: String, nRoot :: String, nNumber :: SgPl } deriving (Show, Eq)
 data ProperN = ProperN { properNHead :: String, properNNumber :: SgPl } deriving (Show, Eq)
-data AdverbialN = AdverbialN { advNHead :: String, advTime :: Time } deriving (Show, Eq)
+data AdverbialN = AdverbialN { advNHead :: String } deriving (Show, Eq)
 data Adverb = Adverb { advHead :: String } deriving (Show, Eq)
 data D = D { dHead :: String } deriving (Show, Eq)
 data V = V { vHead :: String, vRoot :: String, vForm :: VerbForm, predicateProps :: [PredicateProps] } deriving (Show, Eq)
@@ -43,8 +42,9 @@ calculators = N { nHead = "calculators", nRoot = "calculator", nNumber = Pl }
 test = N { nHead = "test", nRoot = "test", nNumber = Sg }
 tests = N { nHead = "tests", nRoot = "test", nNumber = Pl }
 
-tomorrow = AdverbialN { advNHead = "tomorrow", advTime = DeltaInDays 1 }
-yesterday = AdverbialN { advNHead = "yesterday", advTime = DeltaInDays (-1) }
+-- Mapped to times in Model/Times.hs
+tomorrow = AdverbialN { advNHead = "tomorrow" }
+yesterday = AdverbialN { advNHead = "yesterday" }
 
 quickly = Adverb { advHead = "quickly" }
 

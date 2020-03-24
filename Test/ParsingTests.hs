@@ -1,14 +1,11 @@
-module ParsingTests where
--- TODO this should live in the test directory - for that to work, need to configure Haskell compiler to understand directories
--- https://stackoverflow.com/questions/6606045/haskell-ghci-loading-modules-from-different-directories
--- https://stackoverflow.com/questions/5034685/what-is-the-haskell-syntax-to-import-modules-in-subdirectories
+module Test.ParsingTests where
 
-import DataStructures
-import Grammar
-import ParsedExamples
-import Parsing
-import TreeExamples
-import TypeClasses
+import Grammar.Grammar
+import Parsing.DataStructures
+import Parsing.Parsing
+import Test.ParsedExamples
+import Test.TreeExamples
+import Utils.TypeClasses
 
 equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
 -- No need to check trees, and don't check presupp's for now because they're not implemented yet

@@ -2,10 +2,10 @@ module Main where
 
 import Control.Applicative
 
-import DataStructures
-import ModelGeneration
-import ParsedExamples
-import TypeClasses
+import Model.ModelGeneration
+import Parsing.DataStructures
+import Test.ParsedExamples
+import Utils.TypeClasses
 
 main :: IO ()
 main = do

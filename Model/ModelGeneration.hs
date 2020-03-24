@@ -1,4 +1,4 @@
-module ModelGeneration
+module Model.ModelGeneration
     ( generateModel
     , generateDiscourseModel
     , combineModels
@@ -7,10 +7,10 @@ module ModelGeneration
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
 
-import DataStructures
-import Features
-import ModelStructures
-import Times
+import Grammar.Features
+import Model.ModelStructures
+import Model.Times
+import Parsing.DataStructures
 
 ----------------------
 -- MODEL GENERATION --

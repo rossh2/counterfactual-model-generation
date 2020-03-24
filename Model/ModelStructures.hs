@@ -1,11 +1,11 @@
-module ModelStructures where
+module Model.ModelStructures where
 
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 
-import DataStructures
-import Times
-import TypeClasses
+import Model.Times
+import Parsing.DataStructures
+import Utils.TypeClasses
 
 data World = World {
     propositions :: Set.Set Prop

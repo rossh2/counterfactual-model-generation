@@ -1,7 +1,7 @@
-module TreeExamples where
+module Test.TreeExamples where
 
-import Grammar
-import Lexicon
+import Grammar.Grammar
+import Grammar.Lexicon
 
 ----------------------
 -- Simple Sentences --

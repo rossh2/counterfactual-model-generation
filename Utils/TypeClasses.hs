@@ -1,4 +1,4 @@
-module TypeClasses where
+module Utils.TypeClasses where
 
 -- Unlike Show, which should return a Haskell-compatible string,  this is designed to take a lexicon item,
 -- proposition or syntactic tree and return the linearized constituent/sentence.

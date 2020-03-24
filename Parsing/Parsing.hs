@@ -1,4 +1,4 @@
-module Parsing
+module Parsing.Parsing
     ( parseSentence
     , parseDiscourse
     , getTemporalAdjunctHeads -- only exported for use in ParsingTests
@@ -6,12 +6,12 @@ module Parsing
 
 import qualified Data.List as List
 
-import DataStructures
-import Features
-import Grammar
-import Lexicon
-import Times
-import TypeClasses
+import Grammar.Features
+import Grammar.Grammar
+import Grammar.Lexicon
+import Model.Times
+import Parsing.DataStructures
+import Utils.TypeClasses
 
 parseDiscourse :: [(SentTree, [String])] -> Maybe ParsedDiscourse
 parseDiscourse [] = Just []
@@ -85,8 +85,9 @@ parseArguments (VP5 vp adj) = parseArguments vp
 
 parseTime :: VP -> Maybe Time
 -- Assume temporal adverb supersedes tense, don't validate if they match (they won't anyway for mismatched past counterfactuals)
+-- Enforce that there is at most one temporal adverbial, otherwise fail to parse and return Nothing
 parseTime vp = if not (null adjunctTimes) then
-                    if length adjunctTimes == 1 then Just (head adjunctTimes) else Nothing
+                    if length adjunctTimes == 1 then head adjunctTimes else Nothing
                else tenseTime
     where tenseTime = verbFormsToTime (getAuxEffects vp) (getVerbForms vp)
           adjunctTimes = map timeFromAdj (filter isTemporalAdj (getAdjuncts vp))
@@ -113,9 +114,9 @@ isTemporalAdj :: VPAdjunct -> Bool
 isTemporalAdj (VPA1 advN) = True -- TODO All adverbial Ns in the lexicon are currently temporal - do non-temporal ones exist?
 isTemporalAdj (VPA2 adv) = False
 
-timeFromAdj :: VPAdjunct -> Time
-timeFromAdj (VPA1 advN) = advTime advN
-timeFromAdj (VPA2 adv) = Present -- Dummy default value, should not be calling on non-temporal adjuncts
+timeFromAdj :: VPAdjunct -> Maybe Time
+timeFromAdj (VPA1 advN) = advNToTime advN
+timeFromAdj (VPA2 adv) = Nothing
 
 -- TODO Is it better to set the consequent's time to be the time of the antecedent, or to keep it as unknown?
 -- Not relevant for MinimalModel right now anyway, as time of whole conditional is taken from antecedent

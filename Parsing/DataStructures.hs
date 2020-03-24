@@ -1,14 +1,14 @@
-module DataStructures where
+module Parsing.DataStructures where
 
 import Data.Ord
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 
-import Features
-import Grammar
-import Lexicon
-import Times
-import TypeClasses
+import Grammar.Features
+import Grammar.Grammar
+import Grammar.Lexicon
+import Model.Times
+import Utils.TypeClasses
 
 -- Rough implementation of Davidsonian events, with some extras (predicate properties)
 -- TODO in the long term, event components shouldn't be strings but of e.g. lambda-expressions for meaning

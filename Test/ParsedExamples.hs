@@ -1,9 +1,9 @@
-module ParsedExamples where
+module Test.ParsedExamples where
 
-import DataStructures
-import Features
-import Times
-import TreeExamples
+import Grammar.Features
+import Model.Times
+import Parsing.DataStructures
+import Test.TreeExamples
 
 ------------------
 -- PROPOSITIONS --
