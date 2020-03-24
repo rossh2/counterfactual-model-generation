@@ -7,6 +7,9 @@ import Parsing.DataStructures
 import Test.ParsedExamples
 import Utils.TypeClasses
 
+-- TODO this is outdated now that ModelGenerationTests exists.
+-- Consider replacing with a UI where you can enter trees and return the model,
+-- or pick from the test examples and show the model
 main :: IO ()
 main = do
     showSimpleSentences

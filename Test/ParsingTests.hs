@@ -3,13 +3,35 @@ module Test.ParsingTests where
 import Grammar.Grammar
 import Parsing.DataStructures
 import Parsing.Parsing
-import Test.ParsedExamples
+import Test.ParsedSentenceExamples
 import Test.TreeExamples
 import Utils.TypeClasses
 
-equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
--- No need to check trees, and don't check presupp's for now because they're not implemented yet
-equalExceptPresupps p1 p2 = prop p1 == prop p2 && time p1 == time p2 && mood p1 == mood p2
+main :: IO ()
+main = do
+    let tested = testExamples allSentences
+        testResults = map snd tested
+        correctCount = length $ filter id testResults
+        allCount = length testResults
+    putStrLn $ "Correctly predicted: " ++ (show correctCount) ++ "/" ++ (show allCount)
+    if correctCount /= allCount then debug else putStrLn ""
+
+debug :: IO ()
+debug = do
+    let tested = testExamples allSentences
+        failed = map (showLin . fst) (filter (not . snd) tested)
+    putStrLn $ show failed
+
+countCorrect :: [Bool] -> String
+countCorrect isCorrectList = "Correctly predicted: " ++ (show correctCount) ++ "/" ++ (show allCount)
+    where correctCount = length $ filter id isCorrectList
+          allCount = length isCorrectList
+
+testExamples :: [ParsedSentence] -> [(ParsedSentence, Bool)]
+testExamples = map (\x -> (x, checkExampleEqual x))
+
+checkExampleEqual :: ParsedSentence -> Bool
+checkExampleEqual sent = sentEqualExceptPresupps sent (parseFromExample sent)
 
 sentEqualExceptPresupps :: ParsedSentence -> Maybe ParsedSentence -> Bool
 sentEqualExceptPresupps s Nothing = False
@@ -17,6 +39,10 @@ sentEqualExceptPresupps (ParsedSimpleSentence p1) (Just (ParsedSimpleSentence p2
 sentEqualExceptPresupps (ParsedConditional p1 q1 timeC1 tree1) (Just (ParsedConditional p2 q2 timeC2 tree2)) =
     equalExceptPresupps p1 p2 && equalExceptPresupps q1 q2 && timeC1 == timeC2
 sentEqualExceptPresupps _ _ = False
+
+equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
+-- No need to check trees, and don't check presupp's for now because they're not implemented yet
+equalExceptPresupps p1 p2 = prop p1 == prop p2 && time p1 == time p2 && mood p1 == mood p2
 
 parseFromExample :: ParsedSentence -> Maybe ParsedSentence
 parseFromExample sent@(ParsedSimpleSentence parsedP) = parseSentence (tree parsedP) []
@@ -28,19 +54,9 @@ extractTemporalAdjuncts :: SentTree -> [String]
 extractTemporalAdjuncts (Sent1 (TP np vp)) = getTemporalAdjunctHeads vp
 extractTemporalAdjuncts (Sent2 c (TP np vp) tp2) = getTemporalAdjunctHeads vp
 
-checkExampleEqual :: ParsedSentence -> Bool
-checkExampleEqual sent = sentEqualExceptPresupps sent (parseFromExample sent)
-
--- Tests
-tested = map (\x -> (x, checkExampleEqual x)) allSentences
-testResults = map snd tested
-allTests = all snd tested
-
--- Diagnostics
-noParse = map ((\x -> x == Nothing) . parseFromExample) allSentences
-parsedButIncorrectExists = not (map snd tested == map not noParse)
-
-failingSentences = map (showLin . fst) (filter (not . snd) tested)
+-----------------
+-- Diagnostics --
+-----------------
 
 printSideBySide :: ParsedSentence -> IO ()
 printSideBySide sent = do
