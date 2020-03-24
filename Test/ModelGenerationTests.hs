@@ -3,26 +3,27 @@ module Test.ModelGenerationTests where
 import Model.ModelGeneration
 import Parsing.DataStructures
 import Test.ParsedSentenceExamples
+import Test.TestUtils
 
 main :: IO ()
 main = do
     putStrLn "** INDIVIDUAL SENTENCES **"
     putStrLn "SIMPLE SENTENCES"
     putStrLn "Charlie __."
-    putStrLn $ showCorrectCount singleSentencesExpected
+    printCorrectCountOrDebugList $ testFelicity singleSentencesExpected
     putStrLn "CONDITIONALS"
     putStrLn "If Charlie __, Charlie __."
-    putStrLn $ showCorrectCount singleConditionalsExpected
+    printCorrectCountOrDebugList $ testFelicity singleConditionalsExpected
     putStrLn "\n** DISCOURSES **"
     putStrLn "SIMPLE SENTENCES"
     putStrLn "Charlie __ the test. Charlie __ the test."
     putStrLn $ makeResultsTable simpleSentenceExpected
     putStrLn "INDICATIVE (NO TIME FOCUS - REPEATING UNIQUE EVENT)"
     putStrLn "Charlie __ the test. If Charlie takes the test tomorrow, Charlie will __ the test."
-    putStrLn $ makeResultsList indicativeExpected
+    printCorrectCountOrDebugList $ testFelicity indicativeExpected
     putStrLn "SUBJUNCTIVE (NO TIME FOCUS - REPEATING UNIQUE EVENT)"
     putStrLn "Charlie __ the test. If Charlie took the test tomorrow, Charlie would __ the test."
-    putStrLn $ makeResultsList subjunctiveExpected
+    printCorrectCountOrDebugList $ testFelicity subjunctiveExpected
     putStrLn "COUNTERFACTUAL (NO TIME FOCUS)"
     putStrLn "Charlie __ the test. If Charlie had brought his calculator, Charlie would have __ the test."
     putStrLn $ makeResultsTable counterfactualExpected
@@ -36,19 +37,8 @@ main = do
     putStrLn "Charlie __ the test. If Charlie had taken the test tomorrow, Charlie would have __ the test."
     putStrLn $ makeResultsTable counterfactualTimeFocusExpected
 
-makeResultsList :: [(ParsedDiscourse, Bool)] -> String
-makeResultsList ds = preamble ++ "\n" ++ show isCorrectList
-    where isCorrectList = map checkFelicityPredicted ds
-          preamble = countCorrect isCorrectList
-
-countCorrect :: [Bool] -> String
-countCorrect isCorrectList = "Correctly predicted: " ++ (show correctCount) ++ "/" ++ (show allCount)
-    where correctCount = length $ filter id isCorrectList
-          allCount = length isCorrectList
-
-showCorrectCount :: [(ParsedDiscourse, Bool)] -> String
-showCorrectCount ds = countCorrect isCorrectList
-    where isCorrectList = map checkFelicityPredicted ds
+testFelicity :: [(ParsedDiscourse, Bool)] -> [(ParsedDiscourse, Bool)]
+testFelicity = map (\x -> (fst x, checkFelicityPredicted x))
 
 checkFelicityPredicted :: (ParsedDiscourse, Bool) -> Bool
 checkFelicityPredicted (discourse, actualFelicity) = predictedFelicity == actualFelicity

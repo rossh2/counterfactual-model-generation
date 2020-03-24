@@ -5,27 +5,12 @@ import Parsing.DataStructures
 import Parsing.Parsing
 import Test.ParsedSentenceExamples
 import Test.TreeExamples
-import Utils.TypeClasses
+import Test.TestUtils
 
 main :: IO ()
 main = do
     let tested = testExamples allSentences
-        testResults = map snd tested
-        correctCount = length $ filter id testResults
-        allCount = length testResults
-    putStrLn $ "Correctly predicted: " ++ (show correctCount) ++ "/" ++ (show allCount)
-    if correctCount /= allCount then debug else putStrLn ""
-
-debug :: IO ()
-debug = do
-    let tested = testExamples allSentences
-        failed = map (showLin . fst) (filter (not . snd) tested)
-    putStrLn $ show failed
-
-countCorrect :: [Bool] -> String
-countCorrect isCorrectList = "Correctly predicted: " ++ (show correctCount) ++ "/" ++ (show allCount)
-    where correctCount = length $ filter id isCorrectList
-          allCount = length isCorrectList
+    printCorrectCountOrDebugSingle tested
 
 testExamples :: [ParsedSentence] -> [(ParsedSentence, Bool)]
 testExamples = map (\x -> (x, checkExampleEqual x))
