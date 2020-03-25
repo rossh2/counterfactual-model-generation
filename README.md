@@ -52,17 +52,17 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 
 ### Must Have
 
-* Parse presuppositions - can be somewhat hard-coded if necessary, but handle them somehow
 * Extract time contrast of events from discourse, not from antecedent alone (e.g. using an extra "word stress" input - a temporary crutch implementation to allow it to work on single sentences)
 
 ### Should Have
 
+* Parse presuppositions - can be somewhat hard-coded if necessary, but handle them somehow
 * Compositional semantics for event meanings, rather than strings
 * Teach model generation that _pass_ and _not fail_ generally have the same truth values, i.e. _Charlie passed. Charlie failed_ is contradictory and should not generate a minimal model. However, when cancelling implicatures this equivalence can only cause the model to crash and not rescue it.
-* Handle special accommodation options for _didn't fail_
 
 ### Nice to Have (Stretch Goals)
 
+* Given the above _pass_/_fail_ handling, handle special accommodation options for _didn't fail_
 * Teach model generation that any time in past (e.g. _yesterday_) conflicts with the general time `Past` when generating models
 * Handle perfect aspect / event completion better (don't just have predicate _has taken_ which has no relation to _take_)
 * Handle mixed time conditionals e.g. _If Charlie went to the review session today, he would pass his test tomorrow_. Currently the model generation takes the time for the entire conditional to be the time in the antecedent. (See also the discussion about consequent times above.)
