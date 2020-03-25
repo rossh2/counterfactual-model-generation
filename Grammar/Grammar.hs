@@ -6,7 +6,14 @@ import Grammar.Features
 import Grammar.Lexicon
 import Utils.TypeClasses
 
--- Grammar
+-- A note on conditionals:
+-- In the literature, the conditional if-clause is modelled as a CP starting in VP-adjunct position and moving to the
+-- front of the sentence. This is motivated by the alternative construction "Charlie would have passed his test if he had taken it yesterday."
+-- Because we need to model the final sentence (S-Structure), we model it simply as C TP TP.
+-- Arguably more accurate would be to have it recursive: CP -> C TP | CP TP, where the C is usually silent or may be "then".
+-- However this would allow e.g. CP -> CP TP -> (CP TP) TP -> ((C TP) TP) TP i.e. "if Charlie laughed, (then) Mary laughed, (then) John laughed."
+-- which isn't really grammatical.
+
 data SentTree = Sent1 TP | Sent2 C TP TP deriving (Show, Eq)
 data TP = TP NP VP deriving (Show, Eq)
 data NP = NP1 D N | NP2 ProperN deriving (Show, Eq)

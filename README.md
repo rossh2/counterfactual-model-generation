@@ -45,8 +45,7 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 
 #### Questions for Linguistics
 
-* What is the correct name for words such as _tomorrow_ and _yesterday_? They appear to be a type of "adverbial" noun - do other nouns exist which behave in this way but are not temporal?
-* What is the standard syntactic way to handle conditionals / two-part structures such as _if... (then)..._?
+* What is the correct name for words such as _tomorrow_ and _yesterday_? They're analysed as (pronominal) nouns apparently, but they can occur in places that other nouns cannot and so need to be handled differently in the toy grammar. Do other nouns exist which behave in this way but are not temporal? German has _zuhause_ for _at home_. Should my grammar account for this even if English doesn't have any?
 
 ## Missing Implementation
 
