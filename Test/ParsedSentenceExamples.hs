@@ -568,7 +568,6 @@ notFailNotFailFutureCounterfactual = [notFailPastSentence, futureNotFailCounterf
 
 ------------------------------------------
 -- Lists of some interesting discourses --
--- TODO        (incomplete)             --
 ------------------------------------------
 
 contradictionDiscourses = [
