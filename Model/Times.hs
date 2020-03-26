@@ -1,6 +1,7 @@
 module Model.Times where
 
 import Grammar.Features
+import Grammar.Grammar
 import Grammar.Lexicon
 import Utils.TypeClasses
 
@@ -54,8 +55,9 @@ verbFormsToTime [] [PastTense, Inf] = Just Past -- for "did + Inf"
 verbFormsToTime [FutureEffect] [Modal, Inf] = Just Future
 verbFormsToTime [Perfect] [EnEd] = Just Past -- Perfective aspect has no effect on plain LTL logic
 verbFormsToTime [Perfect] [PastTense, EnEd] = Just Past -- for "had brought"
-verbFormsToTime [Possible] [Modal, Inf] = Just Future -- unclear how to map possibility to time, but "would do" only compatible with future adverbs
--- TODO "would have done" appears to be compatible with all times so this represents an unknown value
+-- unclear how to map possibility to time, but "would do" only compatible with future adverbs
+verbFormsToTime [Possible] [Modal, Inf] = Just Future
+-- "would have done" appears to be compatible with all times so this represents an unknown value
 verbFormsToTime [Possible, Perfect] [Modal, Inf, EnEd] = Just PastOrPresent
 verbFormsToTime [NoEffect] xs = verbFormsToTime [] xs
 verbFormsToTime _ _ = Nothing -- Ungrammatical combination
@@ -67,7 +69,10 @@ auxEffectsToMood [Possible, Perfect] = Just Counterfactual -- "would have gone"
 -- treat "if I had gone" as indicative on its own, since the conditional could be "if James had gone (already), then Ilana had gone (already)"
 auxEffectsToMood _ = Just Indicative
 
-advNToTime :: AdverbialN -> Maybe Time
-advNToTime advN = case advNHead advN of "tomorrow" -> Just (DeltaInDays 1)
-                                        "yesterday" -> Just (DeltaInDays (-1))
-                                        _ -> Nothing
+timeFromAdjunct :: VPAdjunct -> Maybe Time
+-- If the lexicon contained PPs we'd also need to handle cases like "on Monday" here
+timeFromAdjunct (VPA1 advN) = case advNHead advN of
+                                "tomorrow" -> Just (DeltaInDays 1)
+                                "yesterday" -> Just (DeltaInDays (-1))
+                                _ -> Nothing
+timeFromAdjunct (VPA2 adverb) = Nothing -- We don't have any adverbs in the lexicon that relate to time

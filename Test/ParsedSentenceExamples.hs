@@ -41,7 +41,6 @@ simpleSentences = [
 indicativePassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
     , consequent = charliePassFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillPass
     }
 
@@ -49,7 +48,6 @@ indicativePassConditional = ParsedConditional {
 indicativeNotPassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
     , consequent = charlieNotPassFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillNotPass
     }
 
@@ -57,7 +55,6 @@ indicativeNotPassConditional = ParsedConditional {
 indicativeFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
     , consequent = charlieFailFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillFail
     }
 
@@ -65,7 +62,6 @@ indicativeFailConditional = ParsedConditional {
 indicativeNotFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
     , consequent = charlieNotFailFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillNotFail
     }
 
@@ -73,7 +69,6 @@ indicativeNotFailConditional = ParsedConditional {
 indicativeNoFocusPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
     , consequent = charliePassFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillPass
     }
 
@@ -81,7 +76,6 @@ indicativeNoFocusPassConditional = ParsedConditional {
 indicativeNoFocusNotPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
     , consequent = charlieNotPassFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillNotPass
     }
 
@@ -89,7 +83,6 @@ indicativeNoFocusNotPassConditional = ParsedConditional {
 indicativeNoFocusFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
     , consequent = charlieFailFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillFail
     }
 
@@ -97,7 +90,6 @@ indicativeNoFocusFailConditional = ParsedConditional {
 indicativeNoFocusNotFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
     , consequent = charlieNotFailFutureIndicative
-    , timeContrast = False
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillNotFail
     }
 
@@ -105,7 +97,6 @@ indicativeNoFocusNotFailConditional = ParsedConditional {
 indicativeTimeFocusPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
     , consequent = charliePassFutureIndicative
-    , timeContrast = True
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillPass
     }
 
@@ -113,7 +104,6 @@ indicativeTimeFocusPassConditional = ParsedConditional {
 indicativeTimeFocusNotPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
     , consequent = charlieNotPassFutureIndicative
-    , timeContrast = True
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillNotPass
     }
 
@@ -121,7 +111,6 @@ indicativeTimeFocusNotPassConditional = ParsedConditional {
 indicativeTimeFocusFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
     , consequent = charlieFailFutureIndicative
-    , timeContrast = True
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillFail
     }
 
@@ -129,7 +118,6 @@ indicativeTimeFocusFailConditional = ParsedConditional {
 indicativeTimeFocusNotFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
     , consequent = charlieNotFailFutureIndicative
-    , timeContrast = True
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillNotFail
     }
 
@@ -137,7 +125,6 @@ indicativeTimeFocusNotFailConditional = ParsedConditional {
 subjunctivePassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
     , consequent = charliePassFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldPass
     }
 
@@ -145,7 +132,6 @@ subjunctivePassConditional = ParsedConditional {
 subjunctiveNotPassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
     , consequent = charlieNotPassFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotPass
     }
 
@@ -153,7 +139,6 @@ subjunctiveNotPassConditional = ParsedConditional {
 subjunctiveFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
     , consequent = charlieFailFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldFail
     }
 
@@ -161,7 +146,6 @@ subjunctiveFailConditional = ParsedConditional {
 subjunctiveNotFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
     , consequent = charlieNotFailFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotFail
     }
 
@@ -169,7 +153,6 @@ subjunctiveNotFailConditional = ParsedConditional {
 subjunctiveNoFocusPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
     , consequent = charliePassFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldPass
     }
 
@@ -177,7 +160,6 @@ subjunctiveNoFocusPassConditional = ParsedConditional {
 subjunctiveNoFocusNotPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
     , consequent = charlieNotPassFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldNotPass
     }
 
@@ -185,7 +167,6 @@ subjunctiveNoFocusNotPassConditional = ParsedConditional {
 subjunctiveNoFocusFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
     , consequent = charlieFailFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldFail
     }
 
@@ -193,7 +174,6 @@ subjunctiveNoFocusFailConditional = ParsedConditional {
 subjunctiveNoFocusNotFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
     , consequent = charlieNotFailFutureSubjunctive
-    , timeContrast = False
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldNotFail
     }
 
@@ -201,7 +181,6 @@ subjunctiveNoFocusNotFailConditional = ParsedConditional {
 subjunctiveTimeFocusPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
     , consequent = charliePassFutureSubjunctive
-    , timeContrast = True
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldPass
     }
 
@@ -209,7 +188,6 @@ subjunctiveTimeFocusPassConditional = ParsedConditional {
 subjunctiveTimeFocusNotPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
     , consequent = charlieNotPassFutureSubjunctive
-    , timeContrast = True
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldNotPass
     }
 
@@ -217,7 +195,6 @@ subjunctiveTimeFocusNotPassConditional = ParsedConditional {
 subjunctiveTimeFocusFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
     , consequent = charlieFailFutureSubjunctive
-    , timeContrast = True
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldFail
     }
 
@@ -225,7 +202,6 @@ subjunctiveTimeFocusFailConditional = ParsedConditional {
 subjunctiveTimeFocusNotFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
     , consequent = charlieNotFailFutureSubjunctive
-    , timeContrast = True
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldNotFail
     }
 
@@ -233,7 +209,6 @@ subjunctiveTimeFocusNotFailConditional = ParsedConditional {
 passCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
     , consequent = charliePassCounterfactual
-    , timeContrast = False
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldHavePassed
     }
 
@@ -241,7 +216,6 @@ passCounterfactual = ParsedConditional {
 notPassCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
     , consequent = charlieNotPassCounterfactual
-    , timeContrast = False
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldNotHavePassed
     }
 
@@ -249,15 +223,13 @@ notPassCounterfactual = ParsedConditional {
 failCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
     , consequent = charlieFailCounterfactual
-    , timeContrast = False
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldHaveFailed
     }
 
--- "If Charlie had brought his calculator yesterday, Charlie wouldn't have failed the test."
+-- "If Charlie had brought his calculator, Charlie wouldn't have failed the test."
 notFailCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
     , consequent = charlieNotFailCounterfactual
-    , timeContrast = False
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldNotHaveFailed
     }
 
@@ -265,7 +237,6 @@ notFailCounterfactual = ParsedConditional {
 timeFocusPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
     , consequent = charliePassCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldHavePassed
     }
 
@@ -273,7 +244,6 @@ timeFocusPassCounterfactual = ParsedConditional {
 timeFocusNotPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
     , consequent = charlieNotPassCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHavePassed
     }
 
@@ -281,7 +251,6 @@ timeFocusNotPassCounterfactual = ParsedConditional {
 timeFocusFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
     , consequent = charlieFailCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldHaveFailed
     }
 
@@ -289,7 +258,6 @@ timeFocusFailCounterfactual = ParsedConditional {
 timeFocusNotFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
     , consequent = charlieNotFailCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHaveFailed
     }
 
@@ -297,7 +265,6 @@ timeFocusNotFailCounterfactual = ParsedConditional {
 futurePassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
     , consequent = charliePassCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldHavePassed
     }
 
@@ -305,7 +272,6 @@ futurePassCounterfactual = ParsedConditional {
 futureNotPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
     , consequent = charlieNotPassCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHavePassed
     }
 
@@ -313,7 +279,6 @@ futureNotPassCounterfactual = ParsedConditional {
 futureFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
     , consequent = charlieFailCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldHaveFailed
     }
 
@@ -321,7 +286,6 @@ futureFailCounterfactual = ParsedConditional {
 futureNotFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
     , consequent = charlieNotFailCounterfactual
-    , timeContrast = True
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHaveFailed
     }
 
@@ -471,8 +435,8 @@ notFailNotFailSimple = [notFailPastSentence, notFailPastSentence]
 -- Counterfactuals without time focus --
 ----------------------------------------
 
-passPassNoFocusIndicative = [passPastSentence, indicativePassConditional]
-passPassNoFocusSubjunctive = [passPastSentence, subjunctivePassConditional]
+passPassNoFocusIndicative = [passPastSentence, indicativeNoFocusPassConditional]
+passPassNoFocusSubjunctive = [passPastSentence, subjunctiveNoFocusPassConditional]
 
 passPassNoFocusCounterfactual = [passPastSentence, passCounterfactual]
 passNotPassNoFocusCounterfactual = [passPastSentence, notPassCounterfactual]

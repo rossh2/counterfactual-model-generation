@@ -1,7 +1,6 @@
 module Model.ModelGeneration
-    ( generateModel
+    ( generateSentenceModel
     , generateDiscourseModel
-    , combineModels
     ) where
 
 import qualified Data.Map.Strict as Map
@@ -16,18 +15,29 @@ import Parsing.DataStructures
 -- MODEL GENERATION --
 ----------------------
 
-generateDiscourseModel :: ParsedDiscourse -> Maybe MinimalModel
-generateDiscourseModel [] = Just (MinimalModel { actualWorlds = Map.empty, possibleWorlds = Map.empty })
-generateDiscourseModel (x:xs) = combineModels (Just (generateModel x)) (generateDiscourseModel xs)
+emptyModel = Just (MinimalModel { actualWorlds = Map.empty, possibleWorlds = Map.empty })
 
-generateModel :: ParsedSentence -> MinimalModel
-generateModel (ParsedSimpleSentence p) = MinimalModel {
+generateDiscourseModel :: ParsedDiscourse -> Maybe MinimalModel
+generateDiscourseModel sents = foldl addSentenceToModel emptyModel sents
+
+-- Convenience method, will in fact always return a model
+generateSentenceModel :: ParsedSentence -> Maybe MinimalModel
+generateSentenceModel s = addSentenceToModel emptyModel s
+
+addSentenceToModel :: Maybe MinimalModel -> ParsedSentence -> Maybe MinimalModel
+addSentenceToModel m s@(ParsedSimpleSentence p) = combineModels (Just (generateSimpleModel s)) m
+addSentenceToModel m s@(ParsedConditional p q sentTree) = combineModels (Just model) m
+    where timeContrast = checkTimeContrast s m
+          model = if timeContrast then generateTimeContrastModel s else generateSimpleModel s
+
+generateSimpleModel :: ParsedSentence -> MinimalModel
+generateSimpleModel (ParsedSimpleSentence p) = MinimalModel {
     actualWorlds = Map.fromList [
         generateActualWorldWithProp p
         ]
     , possibleWorlds = Map.empty
     }
-generateModel (ParsedConditional p q False sentTree) = case conditionalMood of -- timeContrast = False
+generateSimpleModel (ParsedConditional p q sentTree) = case conditionalMood of
         Indicative -> MinimalModel {
             actualWorlds = Map.fromList [
                 generateActualWorldWithPresupps p
@@ -51,8 +61,11 @@ generateModel (ParsedConditional p q False sentTree) = case conditionalMood of -
                 ]
             }
     where conditionalMood = mood q
-generateModel (ParsedConditional p q True sentTree) = case conditionalMood of -- timeContrast = True
-        Indicative -> MinimalModel { -- timeContrast = True
+
+generateTimeContrastModel :: ParsedSentence -> MinimalModel
+generateTimeContrastModel s@(ParsedSimpleSentence p) = generateSimpleModel s -- Simple sentences don't have special behaviour
+generateTimeContrastModel (ParsedConditional p q sentTree) = case conditionalMood of
+        Indicative -> MinimalModel {
             actualWorlds = Map.fromList [
                 -- generateActualWorldWithOppositeOutcome p q -- TODO I don't think we need this - need more data; Starr vaguely supports this
                 generateActualWorldWithPresupps p
@@ -60,7 +73,7 @@ generateModel (ParsedConditional p q True sentTree) = case conditionalMood of --
                 ]
             , possibleWorlds = Map.empty
             }
-        Subjunctive -> MinimalModel { -- timeContrast = True
+        Subjunctive -> MinimalModel {
             actualWorlds = Map.fromList [
                 generateActualWorldWithOppositeOutcome p q
                 , generateActualWorldWithPresupps p
@@ -68,7 +81,7 @@ generateModel (ParsedConditional p q True sentTree) = case conditionalMood of --
                 ]
             , possibleWorlds = Map.empty
             }
-        Counterfactual -> MinimalModel { -- timeContrast = True
+        Counterfactual -> MinimalModel {
             actualWorlds = Map.fromList [
                 generateActualWorldWithOppositeOutcome p q
                 ]
@@ -165,3 +178,26 @@ addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
           cancelExisting = if not safeToAdd then cancellable (Set.elemAt 0 matching) else False -- && not inconsistent
           nothingToDo = if not safeToAdd then (Set.elemAt 0 matching) == q || (cancellable q && not cancelExisting) else False
           newPs = if cancelExisting then Set.delete (Set.elemAt 0 matching) ps else ps
+
+
+--------------------------------------
+-- TIME CONTRAST / EVENT REPETITION --
+--------------------------------------
+
+checkTimeContrast :: ParsedSentence -> Maybe MinimalModel -> Bool
+checkTimeContrast _ Nothing = False
+checkTimeContrast (ParsedSimpleSentence p) (Just m) = eventRepetition
+    where eventRepetition = isRepeatedEvent p m
+checkTimeContrast (ParsedConditional p q sentTree) (Just m) = conditionalMood == Counterfactual || predicateRepetition || eventRepetition
+    where conditionalMood = mood q
+          predicateRepetition = Repetition `elem` (predProps . content . prop) p
+          eventRepetition = isRepeatedEvent p m
+
+-- TODO unclear whether this is needed - counterfactual + predicate repetition flag on re-take actually handles all our cases right now
+-- But this is probably needed for the ice-cream case which is naturally repeatable without use of "re-get ice-cream"
+isRepeatedEvent :: ParsedProp -> MinimalModel -> Bool
+isRepeatedEvent pProp m = Set.member event modelActualEvents
+    where event = (content . prop) pProp
+          modelActualProps = Set.unions $ Map.map propositions (actualWorlds m)
+          modelActualEvents = Set.map content modelActualProps
+

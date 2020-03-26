@@ -56,7 +56,7 @@ singleConditionalsExpected = map (\x -> ([x], True)) allConditionals
 -- Specific models --
 ---------------------
 
--- TODO check a few specific cases
+-- TODO check a few specific cases with generateSentenceModel
 
 -- TODO check special cases where model is rescued by meaning of "didn't fail"
 
@@ -118,15 +118,18 @@ simpleSentenceExpected = [
 ----------------------
 
 indicativeExpected = [
+    -- These should fail because the event is being repeated in the actual world but has a presupposition that test not taken
     (passPassNoFocusIndicative, False) -- Charlie passed the test. If Charlie takes the test tomorrow, Charlie will pass the test.
+    (passNotPassNoFocusIndicative, False)
     ]
 
 subjunctiveExpected = [
+    -- These should fail because the event is being repeated in the actual world but has a presupposition that test not taken
     (passPassNoFocusSubjunctive, False) -- Charlie passed the test. If Charlie took the test tomorrow, Charlie would pass the test.
+    (passNotPassNoFocusSubjunctive, False)
     ]
 
 counterfactualExpected = [
-    -- TODO check judgements still hold without explicit mention of time - should still be the case, because counterfactual?
     [
         (passPassNoFocusCounterfactual, True) -- Charlie passed the test. If Charlie had brought his calculator, Charlie would have passed the test.
         , (passFailNoFocusCounterfactual, True)

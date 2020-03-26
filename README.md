@@ -36,7 +36,7 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 
 * What are the felicity judgements for indicative conditionals?
 * Do counterfactuals with no time contrast ("calculator examples") have the same felicity judgements as counterfactuals which change the date of the event?
-* Should _take_ and _retake_ have the same propositions - i.e. if a model contains the presupposition _Charlie takes the test_ and we add the information _Charlie retakes the test_, does that overwrite the presupposition or does the model contain both?
+* Should _take_ and _retake_ have the same propositions - i.e. if a model contains the presupposition _Charlie takes the test_ and we add the information _Charlie retakes the test_, does that overwrite the presupposition or does the model contain both? This relates to the issue below about handling (non-)repeatable predicates more nicely.
 
 ### Data Structures
 
@@ -51,19 +51,19 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 
 ### Must Have
 
-* Extract time contrast of events from discourse, not from antecedent alone (e.g. using an extra "word stress" input - a temporary crutch implementation to allow it to work on single sentences)
-
 ### Should Have
 
 * Parse presuppositions - can be somewhat hard-coded if necessary, but handle them somehow
 * Compositional semantics for event meanings, rather than strings
 * Teach model generation that _pass_ and _not fail_ generally have the same truth values, i.e. _Charlie passed. Charlie failed_ is contradictory and should not generate a minimal model. However, when cancelling implicatures this equivalence can only cause the model to crash and not rescue it.
+* Handle presupposition of _Charlie has not taken the test (yet)_ better, so that it conflicts with _Charlie took/passed/failed the test_. See also the note below about repeatability.
 
 ### Nice to Have (Stretch Goals)
 
 * Given the above _pass_/_fail_ handling, handle special accommodation options for _didn't fail_
+* Model repeatability of e.g. test-taking in lexicon (is there a better way than just generating the presupposition of test not taken?) 
+Mesh this nicely with the  `Repetition` flag on _retake_, right now _retake_ is an entirely separate predicate.
 * Teach model generation that any time in past (e.g. _yesterday_) conflicts with the general time `Past` when generating models
-* Handle perfect aspect / event completion better (don't just have predicate _has taken_ which has no relation to _take_)
 * Handle mixed time conditionals e.g. _If Charlie went to the review session today, he would pass his test tomorrow_. Currently the model generation takes the time for the entire conditional to be the time in the antecedent. (See also the discussion about consequent times above.)
 
 ## Testing

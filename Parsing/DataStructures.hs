@@ -57,13 +57,12 @@ data ParsedSentence = ParsedSimpleSentence {
     } | ParsedConditional {
         antecedent :: ParsedProp
         , consequent :: ParsedProp
-        , timeContrast :: Bool
         , fullTree :: SentTree
     } deriving (Show, Eq)
 
 instance ShowLinear ParsedSentence where
     showLin (ParsedSimpleSentence p) = (showLin . tree) p
-    showLin (ParsedConditional p q tc sentTree) = showLin sentTree
+    showLin (ParsedConditional p q sentTree) = showLin sentTree
     showLinList [] = ""
     showLinList (x:xs) = showLin x ++ showl xs
         where showl [] = ""

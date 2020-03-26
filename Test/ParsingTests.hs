@@ -21,8 +21,8 @@ checkExampleEqual sent = sentEqualExceptPresupps sent (parseFromExample sent)
 sentEqualExceptPresupps :: ParsedSentence -> Maybe ParsedSentence -> Bool
 sentEqualExceptPresupps s Nothing = False
 sentEqualExceptPresupps (ParsedSimpleSentence p1) (Just (ParsedSimpleSentence p2)) = equalExceptPresupps p1 p2
-sentEqualExceptPresupps (ParsedConditional p1 q1 timeC1 tree1) (Just (ParsedConditional p2 q2 timeC2 tree2)) =
-    equalExceptPresupps p1 p2 && equalExceptPresupps q1 q2 && timeC1 == timeC2
+sentEqualExceptPresupps (ParsedConditional p1 q1 tree1) (Just (ParsedConditional p2 q2 tree2)) =
+    equalExceptPresupps p1 p2 && equalExceptPresupps q1 q2
 sentEqualExceptPresupps _ _ = False
 
 equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
@@ -30,14 +30,8 @@ equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
 equalExceptPresupps p1 p2 = prop p1 == prop p2 && time p1 == time p2 && mood p1 == mood p2
 
 parseFromExample :: ParsedSentence -> Maybe ParsedSentence
-parseFromExample sent@(ParsedSimpleSentence parsedP) = parseSentence (tree parsedP) []
-parseFromExample sent@(ParsedConditional p q timeC sentTree) = parseSentence sentTree stressedWords
-    where stressedWords = if timeC then extractTemporalAdjuncts (tree p) else []
-
-extractTemporalAdjuncts :: SentTree -> [String]
--- Extract temporal adjuncts to stress from sentence or from antecedent of conditional
-extractTemporalAdjuncts (Sent1 (TP np vp)) = getTemporalAdjunctHeads vp
-extractTemporalAdjuncts (Sent2 c (TP np vp) tp2) = getTemporalAdjunctHeads vp
+parseFromExample sent@(ParsedSimpleSentence parsedP) = parseSentence (tree parsedP)
+parseFromExample sent@(ParsedConditional p q sentTree) = parseSentence sentTree
 
 -----------------
 -- Diagnostics --
@@ -52,8 +46,8 @@ printSideBySide sent = do
 
 showExceptTreeAndPresupps :: ParsedSentence -> String
 showExceptTreeAndPresupps (ParsedSimpleSentence p) = "ParsedSimpleSentence { pProp = " ++ showPropExcept p ++ "}"
-showExceptTreeAndPresupps (ParsedConditional p q tc sentTree) = "ParsedConditional { antecedent = " ++ showPropExcept p
-    ++ ", consequent = " ++ showPropExcept q ++ ", timeContrast = " ++ show tc ++ "}"
+showExceptTreeAndPresupps (ParsedConditional p q sentTree) = "ParsedConditional { antecedent = " ++ showPropExcept p
+    ++ ", consequent = " ++ showPropExcept q ++ "}"
 
 showPropExcept :: ParsedProp -> String
 showPropExcept p = "ParsedProp { prop = " ++ show (prop p) ++ ", time = " ++ show (time p) ++ ", mood = " ++ show (mood p) ++ "}"
