@@ -32,33 +32,27 @@ addSentenceToModel m s@(ParsedConditional p q sentTree) = combineModels (Just mo
 
 generateSimpleModel :: ParsedSentence -> MinimalModel
 generateSimpleModel (ParsedSimpleSentence p) = MinimalModel {
-    actualWorlds = Map.fromList [
-        generateActualWorldWithProp p
-        ]
+    actualWorlds = worldsFromProps False $ propWithPresupps p
     , possibleWorlds = Map.empty
     }
 generateSimpleModel (ParsedConditional p q sentTree) = case conditionalMood of
         Indicative -> MinimalModel {
-            actualWorlds = Map.fromList [
-                generateActualWorldWithPresupps p
-                , generateActualWorldWithConditional p q
-                ]
+            actualWorlds = worldsFromProps False $
+                makePresuppositionsAtTime Present p
+                ++ conditionalWithPresupps p q
             , possibleWorlds = Map.empty
             }
         Subjunctive -> MinimalModel {
-            actualWorlds = Map.fromList [
-                generateActualWorldWithPresupps p
-                , generateActualWorldWithConditional p q
-                ]
+            actualWorlds = worldsFromProps False $
+                makePresuppositionsAtTime Present p
+                ++ conditionalWithPresupps p q
             , possibleWorlds = Map.empty
             }
         Counterfactual -> MinimalModel {
-            actualWorlds = Map.fromList [
-                generateActualWorldForCounterfactual p q
-                ]
-            , possibleWorlds = Map.fromList [
-                generateCounterfactualWorld p q
-                ]
+            actualWorlds = worldsFromProps False $
+                oppositePastConditionalWithPresupps p q
+            , possibleWorlds = worldsFromProps True $
+                conditionalWithPresupps p q
             }
     where conditionalMood = mood q
 
@@ -66,73 +60,68 @@ generateTimeContrastModel :: ParsedSentence -> MinimalModel
 generateTimeContrastModel s@(ParsedSimpleSentence p) = generateSimpleModel s -- Simple sentences don't have special behaviour
 generateTimeContrastModel (ParsedConditional p q sentTree) = case conditionalMood of
         Indicative -> MinimalModel {
-            actualWorlds = Map.fromList [
-                -- generateActualWorldWithOppositeOutcome p q -- TODO I don't think we need this - need more data; Starr vaguely supports this
-                generateActualWorldWithPresupps p
-                , generateActualWorldWithConditional p q
-                ]
+            actualWorlds = worldsFromProps False $
+                makePresuppositionsAtTime Present p
+                ++ conditionalWithPresupps p q
+                --  ++ (oppositeOutcomePastConditionalWithPresupps p q) -- TODO I don't think we need this - need more data; Starr vaguely supports this
             , possibleWorlds = Map.empty
             }
         Subjunctive -> MinimalModel {
-            actualWorlds = Map.fromList [
-                generateActualWorldWithOppositeOutcome p q
-                , generateActualWorldWithPresupps p
-                , generateActualWorldWithConditional p q
-                ]
+            actualWorlds = worldsFromProps False $
+                makePresuppositionsAtTime Present p
+                ++ conditionalWithPresupps p q
+                ++ oppositeOutcomePastConditionalWithPresupps p q
             , possibleWorlds = Map.empty
             }
         Counterfactual -> MinimalModel {
-            actualWorlds = Map.fromList [
-                generateActualWorldWithOppositeOutcome p q
-                ]
-            , possibleWorlds = Map.fromList [
-                generateCounterfactualWorld p q
-                ]
+            actualWorlds = worldsFromProps False $
+                oppositePastConditionalWithPresupps p q
+            , possibleWorlds = worldsFromProps True $
+                conditionalWithPresupps p q
             }
     where conditionalMood = mood q
 
+-- It's important that you supply all the props you intend to add at once, since (only) this does proper merging on times
+worldsFromProps :: Bool -> [Prop] -> Map.Map Time World
+worldsFromProps possible ps = foldr (addPropToWorlds possible) Map.empty ps
 
-generateActualWorldWithPresupps :: ParsedProp -> (Time, World)
-generateActualWorldWithPresupps p = (Present, world)
-    where world = World (Set.fromList (presuppositions p)) False
+-- n.B. no sanity check is done that the worlds have the same possible value as the one being passed
+addPropToWorlds :: Bool -> Prop -> Map.Map Time World -> Map.Map Time World
+addPropToWorlds possible p map = if timeExists then Map.adjust (updateWorld p) pTime map
+                                 else Map.insert pTime newWorld map
+    where pTime = (time . content) p
+          timeExists = Map.member pTime map
+          newWorld = World { propositions = Set.singleton p, possible = possible }
 
-generateActualWorldWithProp :: ParsedProp -> (Time, World)
-generateActualWorldWithProp p = (time p, world)
-    where world = World propsWithPresupps False
-          propSet = Set.fromList [prop p]
-          propsWithPresupps = addPresuppsToSet p propSet
+updateWorld :: Prop -> World -> World
+updateWorld p w = w { propositions = newPropositions }
+    where newPropositions = Set.insert p (propositions w)
 
--- Convenience method, could probably be refactored to use generateActualWorldWithProp
--- TODO Assumes that (time p) == (time q) so can't handle mixed time conditionals
--- such as "If Charlie pays attention in class today, he'll pass the test tomorrow"
--- Could fix this by allowing consequent to return its own world at (time q) if (time q) /= (time p), or always return two worlds and merge if same time
-generateActualWorldWithConditional :: ParsedProp -> ParsedProp -> (Time, World)
-generateActualWorldWithConditional p q = (time p, world)
-    where world = World propsWithPresupps False
-          propSet = Set.fromList [prop p, prop q]
-          propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
+propWithPresupps :: ParsedProp -> [Prop]
+propWithPresupps p = prop p : (presuppositions p)
 
-generateActualWorldWithOppositeOutcome :: ParsedProp -> ParsedProp -> (Time, World)
-generateActualWorldWithOppositeOutcome p q = (Past, world)
-    where world = World propsWithPresupps False
-          propSet = Set.fromList [prop p, (implicature . negateProp . prop) q]
-          -- TODO Assumes that presuppositions of (not p) same as presuppositions of p (not true of special cases like "didn't fail"), see also below
-          propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
+conditionalWithPresupps :: ParsedProp -> ParsedProp -> [Prop]
+conditionalWithPresupps p q = [prop p, prop q] ++ (presuppositions p) ++ (presuppositions q)
 
-generateActualWorldForCounterfactual :: ParsedProp -> ParsedProp -> (Time, World)
-generateActualWorldForCounterfactual p q = (time p, world)
-    where world = World propsWithPresupps False
-          propSet = Set.fromList [(implicature . negateProp . prop) p, (implicature . negateProp . prop) q]
-          propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
+oppositeOutcomePastConditionalWithPresupps :: ParsedProp -> ParsedProp -> [Prop]
+oppositeOutcomePastConditionalWithPresupps p q = [setPropTime Past (prop p), setPropTime Past $ makeOppositeOutcomeProp q]
+                                            ++ (makePresuppositionsAtTime Past p)
+                                            ++ (makePresuppositionsAtTime Past q)
 
-generateCounterfactualWorld :: ParsedProp -> ParsedProp -> (Time, World)
-generateCounterfactualWorld p q = (time p, world)
-    where world = World propsWithPresupps True
-          propSet = Set.fromList [prop p, prop q]
-          propsWithPresupps = addPresuppsToSet q (addPresuppsToSet p propSet)
+oppositePastConditionalWithPresupps :: ParsedProp -> ParsedProp -> [Prop]
+oppositePastConditionalWithPresupps p q = [setPropTime Past $ makeOppositeOutcomeProp p, setPropTime Past $ makeOppositeOutcomeProp q]
+                                            ++ (makePresuppositionsAtTime Past p)
+                                            ++ (makePresuppositionsAtTime Past q)
 
-addPresuppsToSet :: ParsedProp -> Set.Set Prop -> Set.Set Prop
-addPresuppsToSet p props = foldr Set.insert props (presuppositions p)
+makePresuppositionsAtTime :: Time -> ParsedProp -> [Prop]
+makePresuppositionsAtTime time p = map (setPropTime time) (presuppositions p)
+
+makeOppositeOutcomeProp :: ParsedProp -> Prop
+makeOppositeOutcomeProp p = (implicature . negateProp . prop) p
+
+setPropTime :: Time -> Prop -> Prop
+setPropTime time p = p { content = pastEvent }
+    where pastEvent = (content p) { time = time }
 
 -----------------------
 -- MODEL COMBINATION --

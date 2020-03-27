@@ -16,6 +16,7 @@ data Event = Event {
     agent :: String
     , predicate :: String
     , arguments :: [String]
+    , time :: Time
     , predProps :: [PredicateProps]
 } deriving (Eq, Ord, Show)
 
@@ -46,11 +47,13 @@ implicature (Prop content negated cancellable) = Prop content negated True
 
 data ParsedProp = ParsedProp {
     prop :: Prop
-    , time :: Time
     , mood :: Mood
     , presuppositions :: [Prop]
     , tree :: SentTree -- Attached for e.g. showing original sentence
 } deriving (Show, Eq)
+
+parsedPropTime :: ParsedProp -> Time
+parsedPropTime = time . content . prop
 
 data ParsedSentence = ParsedSimpleSentence {
         pProp :: ParsedProp

@@ -29,10 +29,10 @@ parseSentence tree@(Sent1 tp)  = case parsedProp of
     where parsedProp = parseSimpleSentence tree tp
 parseSentence tree@(Sent2 c tpP tpQ) = if c == ifC
                                           then case parsedP of
-                                              Just pP -> case parsedQ of
-                                                  Just pQ -> Just (ParsedConditional {
+                                              Just pP -> case fixedQ of
+                                                  Just fQ -> Just (ParsedConditional {
                                                       antecedent = pP
-                                                      , consequent = pQ
+                                                      , consequent = fQ
                                                       , fullTree = tree
                                                       })
                                                   Nothing -> Nothing
@@ -40,37 +40,44 @@ parseSentence tree@(Sent2 c tpP tpQ) = if c == ifC
                                        else Nothing -- Other C heads not implemented
     where parsedP = parseSimpleSentence (Sent1 tpP) tpP
           parsedQ = parseSimpleSentence (Sent1 tpQ) tpQ
+          fixedQ = inferConsequentTime parsedP parsedQ
 
 parseSimpleSentence :: SentTree -> TP -> Maybe ParsedProp
-parseSimpleSentence tree tp@(TP np vp) = case parsedTime of
-                                   Just pTime -> case parsedMood of
+parseSimpleSentence tree tp@(TP np vp) = case parsedProp of
+                                   Just pProp -> case parsedMood of
                                        Just pMood -> Just (ParsedProp {
-                                           prop = parseProp tp
-                                           , time = pTime
+                                           prop = pProp
                                            , mood = pMood
                                            , presuppositions = (parsePresupps tp)
                                            , tree = tree
                                            })
                                        Nothing -> Nothing
                                    Nothing -> Nothing
-    where parsedTime = parseTime vp
+    where parsedProp = parseProp tp
           parsedMood = parseMood vp
 
-parseProp :: TP -> Prop
-parseProp tp@(TP np vp) = Prop {
-    content = parseEvent tp
-    , negated = isVPNegated vp
-    , cancellable = False
-    }
+parseProp :: TP -> Maybe Prop
+parseProp tp@(TP np vp) = case parsedEvent of
+                            Just pEvent -> Just (Prop {
+                                content = pEvent
+                                , negated = isVPNegated vp
+                                , cancellable = False
+                                })
+                            Nothing -> Nothing
+    where parsedEvent = parseEvent tp
 
-parseEvent :: TP -> Event
-parseEvent (TP np vp) = Event {
-        agent = showLin np
-        , predicate = vRoot rootV
-        , arguments = parseArguments vp
-        , predProps = predicateProps rootV
-        }
+parseEvent :: TP -> Maybe Event
+parseEvent (TP np vp) = case parsedTime of
+                            Just pTime -> Just (Event {
+                                agent = showLin np
+                                , predicate = vRoot rootV
+                                , arguments = parseArguments vp
+                                , time = pTime
+                                , predProps = predicateProps rootV
+                                })
+                            Nothing -> Nothing
     where rootV = getRootV vp
+          parsedTime = parseTime vp
 
 parseArguments :: VP -> [String]
 parseArguments (VP1 v) = []
@@ -94,12 +101,18 @@ parseMood vp = auxEffectsToMood (getAuxEffects vp)
 parsePresupps :: TP -> [Prop]
 parsePresupps (TP np vp) = [] -- TODO implement presupposition parsing
 
--- TODO Is it better to set the consequent's time to be the time of the antecedent, or to keep it as unknown?
--- Not relevant for MinimalModel right now anyway, as time of whole conditional is taken from antecedent
--- (Currently this method is not used)
-fixConsequentTime :: Maybe ParsedProp -> Maybe ParsedProp -> Maybe ParsedProp
-fixConsequentTime p Nothing = Nothing -- No consequent, nothing to fix
-fixConsequentTime Nothing q = q -- No antecedent, no information to fix with
-fixConsequentTime (Just p) (Just q) = if time q == PastOrPresent -- use to represent unknown time
-                                        then Just (q { time = time p })
+-- TODO This is a heuristic: will be incorrect for mixed time conditionals such as
+-- "If he had gone shopping yesterday, then he would still have food (now/in the future)."
+inferConsequentTime :: Maybe ParsedProp -> Maybe ParsedProp -> Maybe ParsedProp
+inferConsequentTime p Nothing = Nothing -- No consequent, nothing to fix
+inferConsequentTime Nothing q = q -- No antecedent, no information to fix with
+inferConsequentTime (Just p) (Just q) = if antecedentMoreSpecific
+                                        then Just (applyTimeToProp (parsedPropTime p) q)
                                       else Just q
+    where antecedentMoreSpecific = ((isSpecificTime . parsedPropTime) p && (not . isSpecificTime . parsedPropTime) q)
+                                   || (propTime q) == Unknown -- This is the least specific, anything is better than this
+
+applyTimeToProp :: Time -> ParsedProp -> ParsedProp
+applyTimeToProp t q = q { prop = newProp }
+    where newEvent = ((content . prop) q) { time = t}
+          newProp = (prop q) { content = newEvent }

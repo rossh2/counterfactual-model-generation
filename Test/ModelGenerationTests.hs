@@ -34,7 +34,7 @@ main = do
     putStrLn "Charlie __ the test. If Charlie retook the test tomorrow, Charlie would __ the test."
     putStrLn $ makeResultsTable subjunctiveTimeFocusExpected
     putStrLn "COUNTERFACTUAL, TIME FOCUS"
-    putStrLn "Charlie __ the test. If Charlie had taken the test tomorrow, Charlie would have __ the test."
+    putStrLn "Charlie __ the test. If Charlie had taken the test yesterday, Charlie would have __ the test."
     putStrLn $ makeResultsTable counterfactualTimeFocusExpected
 
 testFelicity :: [(ParsedDiscourse, Bool)] -> [(ParsedDiscourse, Bool)]
@@ -120,13 +120,13 @@ simpleSentenceExpected = [
 indicativeExpected = [
     -- These should fail because the event is being repeated in the actual world but has a presupposition that test not taken
     (passPassNoFocusIndicative, False) -- Charlie passed the test. If Charlie takes the test tomorrow, Charlie will pass the test.
-    (passNotPassNoFocusIndicative, False)
+    , (passNotPassNoFocusIndicative, False)
     ]
 
 subjunctiveExpected = [
     -- These should fail because the event is being repeated in the actual world but has a presupposition that test not taken
     (passPassNoFocusSubjunctive, False) -- Charlie passed the test. If Charlie took the test tomorrow, Charlie would pass the test.
-    (passNotPassNoFocusSubjunctive, False)
+    , (passNotPassNoFocusSubjunctive, False)
     ]
 
 counterfactualExpected = [

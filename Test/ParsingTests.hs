@@ -27,7 +27,7 @@ sentEqualExceptPresupps _ _ = False
 
 equalExceptPresupps :: ParsedProp -> ParsedProp -> Bool
 -- No need to check trees, and don't check presupp's for now because they're not implemented yet
-equalExceptPresupps p1 p2 = prop p1 == prop p2 && time p1 == time p2 && mood p1 == mood p2
+equalExceptPresupps p1 p2 = prop p1 == prop p2 && mood p1 == mood p2
 
 parseFromExample :: ParsedSentence -> Maybe ParsedSentence
 parseFromExample sent@(ParsedSimpleSentence parsedP) = parseSentence (tree parsedP)
@@ -50,4 +50,4 @@ showExceptTreeAndPresupps (ParsedConditional p q sentTree) = "ParsedConditional 
     ++ ", consequent = " ++ showPropExcept q ++ "}"
 
 showPropExcept :: ParsedProp -> String
-showPropExcept p = "ParsedProp { prop = " ++ show (prop p) ++ ", time = " ++ show (time p) ++ ", mood = " ++ show (mood p) ++ "}"
+showPropExcept p = "ParsedProp { prop = " ++ show (prop p) ++ ", mood = " ++ show (mood p) ++ "}"

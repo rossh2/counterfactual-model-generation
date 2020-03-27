@@ -9,82 +9,197 @@ import Test.TreeExamples
 -- PROPOSITIONS --
 ------------------
 
-charlieOwnCalculator = propWithDefaults (Event {
+charlieOwnCalculatorPast = propWithDefaults (Event {
     agent = "Charlie"
     , predicate = "own"
     , arguments = ["a calculator"]
+    , time = Past
     , predProps = []
     })
 
-charlieBringCalculator = propWithDefaults (Event {
+
+charlieOwnCalculatorTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "own"
+    , arguments = ["a calculator"]
+    , time = DeltaInDays 1
+    , predProps = []
+    })
+
+charlieBringCalculatorPast = propWithDefaults (Event {
     agent = "Charlie"
     , predicate = "bring"
     , arguments = ["his calculator"]
+    , time = Past
     , predProps = []
     })
 
-charlieTakeTest = propWithDefaults (Event {
+charlieBringCalculatorTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "bring"
+    , arguments = ["his calculator"]
+    , time = DeltaInDays 1
+    , predProps = []
+    })
+
+charlieTakeTestPast = propWithDefaults (Event {
     agent = "Charlie"
     , predicate = "take"
     , arguments = ["the test"]
+    , time = Past
     , predProps = []
     })
 
-charlieRetakeTest = propWithDefaults (Event {
+charlieTakeTestYesterday = propWithDefaults (Event {
     agent = "Charlie"
-    , predicate = "retake" -- TODO is this the same or not as "Charlie take(s) the test"? In model generation, should we get [take, retake] as separate propositions
+    , predicate = "take"
     , arguments = ["the test"]
-    , predProps = [Repetition]
-    })
-
-charlieHasTakenTest = propWithDefaults (Event {
-    agent = "Charlie"
-    , predicate = "has taken" -- TODO model perfect aspect better (also below)
-    , arguments = ["the test"]
+    , time = DeltaInDays (-1)
     , predProps = []
     })
 
-charlieHasNotTakenTest = Prop {
+charlieTakeTestTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "take"
+    , arguments = ["the test"]
+    , time = DeltaInDays 1
+    , predProps = []
+    })
+
+charlieNotTakeTestPast = Prop {
     content = Event {
         agent = "Charlie"
-        , predicate = "has taken"
+        , predicate = "take"
         , arguments = ["the test"]
+        , time = Past
         , predProps = []
     }
     , negated = True
     , cancellable = False
     }
 
-charliePassTest = propWithDefaults (Event {
+charlieRetakeTestTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "retake" -- TODO is this the same or not as "Charlie take(s) the test"? In model generation, should we get [take, retake] as separate propositions
+    , arguments = ["the test"]
+    , time = DeltaInDays 1
+    , predProps = [Repetition]
+    })
+
+charliePassTestPast = propWithDefaults (Event {
     agent = "Charlie"
     , predicate = "pass"
     , arguments = ["the test"]
+    , time = Past
     , predProps = []
     })
 
-charlieNotPassTest = Prop {
+charliePassTestYesterday = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "pass"
+    , arguments = ["the test"]
+    , time = DeltaInDays (-1)
+    , predProps = []
+    })
+
+charliePassTestTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "pass"
+    , arguments = ["the test"]
+    , time = DeltaInDays 1
+    , predProps = []
+    })
+
+charlieNotPassTestPast = Prop {
     content = Event {
         agent = "Charlie"
         , predicate = "pass"
         , arguments = ["the test"]
+        , time = Past
         , predProps = []
     }
     , negated = True
     , cancellable = False
     }
 
-charlieFailTest = propWithDefaults (Event {
+charlieNotPassTestYesterday = Prop {
+    content = Event {
+        agent = "Charlie"
+        , predicate = "pass"
+        , arguments = ["the test"]
+        , time = DeltaInDays (-1)
+        , predProps = []
+    }
+    , negated = True
+    , cancellable = False
+    }
+
+charlieNotPassTestTomorrow = Prop {
+    content = Event {
+        agent = "Charlie"
+        , predicate = "pass"
+        , arguments = ["the test"]
+        , time = DeltaInDays 1
+        , predProps = []
+    }
+    , negated = True
+    , cancellable = False
+    }
+
+charlieFailTestPast = propWithDefaults (Event {
     agent = "Charlie"
     , predicate = "fail"
     , arguments = ["the test"]
+    , time = Past
     , predProps = []
     })
 
-charlieNotFailTest = Prop {
+charlieFailTestYesterday = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "fail"
+    , arguments = ["the test"]
+    , time = DeltaInDays (-1)
+    , predProps = []
+    })
+
+charlieFailTestTomorrow = propWithDefaults (Event {
+    agent = "Charlie"
+    , predicate = "fail"
+    , arguments = ["the test"]
+    , time = DeltaInDays 1
+    , predProps = []
+    })
+
+charlieNotFailTestPast = Prop {
     content = Event {
         agent = "Charlie"
         , predicate = "fail"
         , arguments = ["the test"]
+        , time = Past
+        , predProps = []
+    }
+    , negated = True
+    , cancellable = False
+    }
+
+charlieNotFailTestYesterday = Prop {
+    content = Event {
+        agent = "Charlie"
+        , predicate = "fail"
+        , arguments = ["the test"]
+        , time = DeltaInDays (-1)
+        , predProps = []
+    }
+    , negated = True
+    , cancellable = False
+    }
+
+charlieNotFailTestTomorrow = Prop {
+    content = Event {
+        agent = "Charlie"
+        , predicate = "fail"
+        , arguments = ["the test"]
+        , time = DeltaInDays 1
         , predProps = []
     }
     , negated = True
@@ -96,222 +211,261 @@ charlieNotFailTest = Prop {
 -------------------------
 
 charliePassPast = ParsedProp {
-    prop = charliePassTest
-    , time = Past
+    prop = charliePassTestPast
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charliePassedTheTest
     }
 
 charlieNotPassPast = ParsedProp {
-    prop = charlieNotPassTest
-    , time = Past
+    prop = charlieNotPassTestPast
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charlieDidNotPassTheTest
     }
 
 charlieFailPast = ParsedProp {
-    prop = charlieFailTest
-    , time = Past
+    prop = charlieFailTestPast
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charlieFailedTheTest
     }
 
 charlieNotFailPast = ParsedProp {
-    prop = charlieNotFailTest
-    , time = Past
+    prop = charlieNotFailTestPast
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charlieDidNotFailTheTest
     }
 
 -- "Charlie brings his calculator tomorrow"
 charlieBringCalculatorTomorrowIndicative = ParsedProp {
-    prop = charlieBringCalculator
-    , time = DeltaInDays 1
+    prop = charlieBringCalculatorTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieOwnCalculator ]
+    , presuppositions = [ charlieOwnCalculatorTomorrow ]
     , tree = charlieBringsHisCalculatorTomorrow
     }
 
 -- "Charlie takes the test tomorrow"
 charlieTakeTestTomorrowIndicative = ParsedProp {
-    prop = charlieTakeTest
-    , time = DeltaInDays 1
+    prop = charlieTakeTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieHasNotTakenTest ]
+    , presuppositions = [ charlieNotTakeTestPast ]
     , tree = charlieTakesTheTestTomorrow
     }
 
 -- "Charlie re-takes the test tomorrow"
 charlieRetakeTestTomorrowIndicative = ParsedProp {
-    prop = charlieRetakeTest
-    , time = DeltaInDays 1
+    prop = charlieRetakeTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieHasTakenTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charlieRetakesTheTestTomorrow
     }
 
 -- "Charlie will pass the test"
-charliePassFutureIndicative = ParsedProp {
-    prop = charliePassTest
-    , time = Future
+charliePassTomorrowIndicative = ParsedProp {
+    prop = charliePassTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWillPassTheTest
     }
 
 -- "Charlie will not pass the test"
-charlieNotPassFutureIndicative = ParsedProp {
-    prop = charlieNotPassTest
-    , time = Future
+charlieNotPassTomorrowIndicative = ParsedProp {
+    prop = charlieNotPassTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWillNotPassTheTest
     }
 
 -- "Charlie will fail the test"
-charlieFailFutureIndicative = ParsedProp {
-    prop = charlieFailTest
-    , time = Future
+charlieFailTomorrowIndicative = ParsedProp {
+    prop = charlieFailTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWillFailTheTest
     }
 
 -- "Charlie will not fail the test"
-charlieNotFailFutureIndicative = ParsedProp {
-    prop = charlieNotFailTest
-    , time = Future
+charlieNotFailTomorrowIndicative = ParsedProp {
+    prop = charlieNotFailTestTomorrow
     , mood = Indicative
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWillNotFailTheTest
     }
 
 -- "[If] Charlie brought his calculator tomorrow"
 charlieBringCalculatorTomorrowSubjunctive = ParsedProp {
-    prop = charlieBringCalculator
-    , time = DeltaInDays 1
+    prop = charlieBringCalculatorTomorrow
     , mood = Indicative -- Technically the mood is indicative (or at least we can't tell) but this is the antecedent for subjunctive conditionals
-    , presuppositions = [ charlieOwnCalculator ]
+    , presuppositions = [ charlieOwnCalculatorTomorrow ]
     , tree = charlieBroughtHisCalculatorTomorrow
     }
 
 -- "[If] Charlie took the test tomorrow"
 charlieTakeTestTomorrowSubjunctive = ParsedProp {
-    prop = charlieTakeTest
-    , time = DeltaInDays 1
+    prop = charlieTakeTestTomorrow
     , mood = Indicative -- Technically (see above)
-    , presuppositions = [ charlieHasNotTakenTest ]
+    , presuppositions = [ charlieNotTakeTestPast ]
     , tree = charlieTookTheTestTomorrow
     }
 
 -- "[If] Charlie re-took the test tomorrow"
 charlieRetakeTestTomorrowSubjunctive = ParsedProp {
-    prop = charlieRetakeTest
-    , time = DeltaInDays 1
+    prop = charlieRetakeTestTomorrow
     , mood = Indicative -- Technically (see above)
-    , presuppositions = [ charlieHasTakenTest ]
+    , presuppositions = [ charlieTakeTestPast ]
     , tree = charlieRetookTheTestTomorrow
     }
 
 -- "Charlie would pass the test"
-charliePassFutureSubjunctive = ParsedProp {
-    prop = charliePassTest
-    , time = Future
+charliePassTomorrowSubjunctive = ParsedProp {
+    prop = charliePassTestTomorrow
     , mood = Subjunctive
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldPassTheTest
     }
 
 -- "Charlie would not pass the test"
-charlieNotPassFutureSubjunctive = ParsedProp {
-    prop = charlieNotPassTest
-    , time = Future
+charlieNotPassTomorrowSubjunctive = ParsedProp {
+    prop = charlieNotPassTestTomorrow
     , mood = Subjunctive
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldNotPassTheTest
     }
 
 -- "Charlie would fail the test"
-charlieFailFutureSubjunctive = ParsedProp {
-    prop = charlieFailTest
-    , time = Future
+charlieFailTomorrowSubjunctive = ParsedProp {
+    prop = charlieFailTestTomorrow
     , mood = Subjunctive
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldFailTheTest
     }
 
 -- "Charlie would not fail the test"
-charlieNotFailFutureSubjunctive = ParsedProp {
-    prop = charlieNotFailTest
-    , time = Future
+charlieNotFailTomorrowSubjunctive = ParsedProp {
+    prop = charlieNotFailTestTomorrow
     , mood = Subjunctive
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldNotFailTheTest
     }
 
 -- "[If] Charlie had brought his calculator [when he took the test]"
 charlieBringCalculatorPastCounterfactual = ParsedProp {
-    prop = charlieBringCalculator
-    , time = Past
+    prop = charlieBringCalculatorPast
     , mood = Indicative -- Technically the mood is indicative (or at least we can't tell) but this is the antecedent for subjunctive conditionals
-    , presuppositions = [ charlieOwnCalculator ]
+    , presuppositions = [ charlieOwnCalculatorPast ]
     , tree = charlieHadBroughtHisCalculator
     }
 
 -- "[If] Charlie had taken the test yesterday"
 charlieTakeTestYesterdayCounterfactual = ParsedProp {
-    prop = charlieTakeTest
-    , time = DeltaInDays (-1)
+    prop = charlieTakeTestYesterday
     , mood = Indicative -- Technically (see above)
-    , presuppositions = [ charlieHasNotTakenTest ]
+    , presuppositions = [ charlieNotTakeTestPast ]
     , tree = charlieHadTakenTheTestYesterday
     }
 
 -- "[If] Charlie had taken the test tomorrow"
 charlieTakeTestTomorrowCounterfactual = ParsedProp {
-    prop = charlieTakeTest
-    , time = DeltaInDays 1
+    prop = charlieTakeTestTomorrow
     , mood = Indicative -- Technically (see above)
-    , presuppositions = [ charlieHasNotTakenTest ]
+    , presuppositions = [ charlieNotTakeTestPast ]
     , tree = charlieHadTakenTheTestTomorrow
     }
 
 -- "Charlie would have passed the test"
-charliePassCounterfactual = ParsedProp {
-    prop = charliePassTest
-    , time = PastOrPresent -- On its own, this prop doesn't have a time associated
+charliePassPastCounterfactual = ParsedProp {
+    prop = charliePassTestPast
     , mood = Counterfactual
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
+    , tree = charlieWouldHavePassedTheTest
+    }
+
+-- "Charlie would have passed the test"
+charliePassYesterdayCounterfactual = ParsedProp {
+    prop = charliePassTestYesterday
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestYesterday ]
+    , tree = charlieWouldHavePassedTheTest
+    }
+
+-- "Charlie would have passed the test"
+charliePassTomorrowCounterfactual = ParsedProp {
+    prop = charliePassTestTomorrow
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldHavePassedTheTest
     }
 
 -- "Charlie would not have passed the test"
-charlieNotPassCounterfactual = ParsedProp {
-    prop = charlieNotPassTest
-    , time = PastOrPresent -- On its own, this prop doesn't have a time associated
+charlieNotPassPastCounterfactual = ParsedProp {
+    prop = charlieNotPassTestPast
     , mood = Counterfactual
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
+    , tree = charlieWouldNotHavePassedTheTest
+    }
+
+-- "Charlie would not have passed the test"
+charlieNotPassYesterdayCounterfactual = ParsedProp {
+    prop = charlieNotPassTestYesterday
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestYesterday ]
+    , tree = charlieWouldNotHavePassedTheTest
+    }
+
+-- "Charlie would not have passed the test"
+charlieNotPassTomorrowCounterfactual = ParsedProp {
+    prop = charlieNotPassTestTomorrow
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldNotHavePassedTheTest
     }
 
 -- "Charlie would have failed the test"
-charlieFailCounterfactual = ParsedProp {
-    prop = charlieFailTest
-    , time = PastOrPresent -- On its own, this prop doesn't have a time associated
+charlieFailPastCounterfactual = ParsedProp {
+    prop = charlieFailTestPast
     , mood = Counterfactual
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
+    , tree = charlieWouldHaveFailedTheTest
+    }
+
+-- "Charlie would have failed the test"
+charlieFailYesterdayCounterfactual = ParsedProp {
+    prop = charlieFailTestYesterday
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestYesterday ]
+    , tree = charlieWouldHaveFailedTheTest
+    }
+
+-- "Charlie would have failed the test"
+charlieFailTomorrowCounterfactual = ParsedProp {
+    prop = charlieFailTestTomorrow
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldHaveFailedTheTest
     }
 
 -- "Charlie wouldn't have failed the test"
-charlieNotFailCounterfactual = ParsedProp {
-    prop = charlieNotFailTest
-    , time = PastOrPresent -- On its own, this prop doesn't have a time associated
+charlieNotFailPastCounterfactual = ParsedProp {
+    prop = charlieNotFailTestPast
     , mood = Counterfactual
-    , presuppositions = [ charlieTakeTest ]
+    , presuppositions = [ charlieTakeTestPast ]
+    , tree = charlieWouldNotHaveFailedTheTest
+    }
+
+-- "Charlie wouldn't have failed the test"
+charlieNotFailYesterdayCounterfactual = ParsedProp {
+    prop = charlieNotFailTestYesterday
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestYesterday ]
+    , tree = charlieWouldNotHaveFailedTheTest
+    }
+
+-- "Charlie wouldn't have failed the test"
+charlieNotFailTomorrowCounterfactual = ParsedProp {
+    prop = charlieNotFailTestTomorrow
+    , mood = Counterfactual
+    , presuppositions = [ charlieTakeTestTomorrow ]
     , tree = charlieWouldNotHaveFailedTheTest
     }

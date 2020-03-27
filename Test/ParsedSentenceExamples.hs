@@ -40,252 +40,252 @@ simpleSentences = [
 -- "If Charlie brings his calculator tomorrow, Charlie will pass the test."
 indicativePassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
-    , consequent = charliePassFutureIndicative
+    , consequent = charliePassTomorrowIndicative
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillPass
     }
 
 -- "If Charlie brings his calculator tomorrow, Charlie will not pass the test."
 indicativeNotPassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
-    , consequent = charlieNotPassFutureIndicative
+    , consequent = charlieNotPassTomorrowIndicative
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillNotPass
     }
 
 -- "If Charlie brings his calculator tomorrow, Charlie will fail the test."
 indicativeFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
-    , consequent = charlieFailFutureIndicative
+    , consequent = charlieFailTomorrowIndicative
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillFail
     }
 
 -- "If Charlie brings his calculator tomorrow, Charlie will not fail the test."
 indicativeNotFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowIndicative
-    , consequent = charlieNotFailFutureIndicative
+    , consequent = charlieNotFailTomorrowIndicative
     , fullTree = ifCharlieBringsHisCalculatorTomorrowCharlieWillNotFail
     }
 
 -- "If Charlie takes the test tomorrow, Charlie will pass the test."
 indicativeNoFocusPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
-    , consequent = charliePassFutureIndicative
+    , consequent = charliePassTomorrowIndicative
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillPass
     }
 
 -- "If Charlie takes the test tomorrow, Charlie will not pass the test."
 indicativeNoFocusNotPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
-    , consequent = charlieNotPassFutureIndicative
+    , consequent = charlieNotPassTomorrowIndicative
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillNotPass
     }
 
 -- "If Charlie takes the test tomorrow, Charlie will fail the test."
 indicativeNoFocusFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
-    , consequent = charlieFailFutureIndicative
+    , consequent = charlieFailTomorrowIndicative
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillFail
     }
 
 -- "If Charlie takes the test tomorrow, Charlie will not fail the test."
 indicativeNoFocusNotFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowIndicative
-    , consequent = charlieNotFailFutureIndicative
+    , consequent = charlieNotFailTomorrowIndicative
     , fullTree = ifCharlieTakesTheTestTomorrowCharlieWillNotFail
     }
 
 -- "If Charlie re-takes the test *tomorrow*, Charlie will pass the test."
 indicativeTimeFocusPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
-    , consequent = charliePassFutureIndicative
+    , consequent = charliePassTomorrowIndicative
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillPass
     }
 
 -- "If Charlie re-takes the test *tomorrow*, Charlie will not pass the test."
 indicativeTimeFocusNotPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
-    , consequent = charlieNotPassFutureIndicative
+    , consequent = charlieNotPassTomorrowIndicative
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillNotPass
     }
 
 -- "If Charlie re-takes the test *tomorrow*, Charlie will fail the test."
 indicativeTimeFocusFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
-    , consequent = charlieFailFutureIndicative
+    , consequent = charlieFailTomorrowIndicative
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillFail
     }
 
 -- "If Charlie re-takes the test *tomorrow*, Charlie won't fail the test."
 indicativeTimeFocusNotFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowIndicative
-    , consequent = charlieNotFailFutureIndicative
+    , consequent = charlieNotFailTomorrowIndicative
     , fullTree = ifCharlieRetakesTheTestTomorrowCharlieWillNotFail
     }
 
 -- "If Charlie brought his calculator tomorrow, Charlie would pass the test."
 subjunctivePassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
-    , consequent = charliePassFutureSubjunctive
+    , consequent = charliePassTomorrowSubjunctive
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldPass
     }
 
 -- "If Charlie brought his calculator tomorrow, Charlie would not pass the test."
 subjunctiveNotPassConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
-    , consequent = charlieNotPassFutureSubjunctive
+    , consequent = charlieNotPassTomorrowSubjunctive
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotPass
     }
 
 -- "If Charlie brought his calculator tomorrow, Charlie would fail the test."
 subjunctiveFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
-    , consequent = charlieFailFutureSubjunctive
+    , consequent = charlieFailTomorrowSubjunctive
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldFail
     }
 
 -- "If Charlie brought his calculator tomorrow, Charlie would not fail the test."
 subjunctiveNotFailConditional = ParsedConditional {
     antecedent = charlieBringCalculatorTomorrowSubjunctive
-    , consequent = charlieNotFailFutureSubjunctive
+    , consequent = charlieNotFailTomorrowSubjunctive
     , fullTree = ifCharlieBroughtHisCalculatorTomorrowCharlieWouldNotFail
     }
 
 -- "If Charlie took the test tomorrow, Charlie would pass the test."
 subjunctiveNoFocusPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
-    , consequent = charliePassFutureSubjunctive
+    , consequent = charliePassTomorrowSubjunctive
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldPass
     }
 
 -- "If Charlie took the test tomorrow, Charlie would not pass the test."
 subjunctiveNoFocusNotPassConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
-    , consequent = charlieNotPassFutureSubjunctive
+    , consequent = charlieNotPassTomorrowSubjunctive
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldNotPass
     }
 
 -- "If Charlie took the test tomorrow, Charlie would fail the test."
 subjunctiveNoFocusFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
-    , consequent = charlieFailFutureSubjunctive
+    , consequent = charlieFailTomorrowSubjunctive
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldFail
     }
 
 -- "If Charlie took the test tomorrow, Charlie wouldn't fail the test."
 subjunctiveNoFocusNotFailConditional = ParsedConditional {
     antecedent = charlieTakeTestTomorrowSubjunctive
-    , consequent = charlieNotFailFutureSubjunctive
+    , consequent = charlieNotFailTomorrowSubjunctive
     , fullTree = ifCharlieTookTheTestTomorrowCharlieWouldNotFail
     }
 
 -- "If Charlie re-took the test *tomorrow*, Charlie would pass the test."
 subjunctiveTimeFocusPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
-    , consequent = charliePassFutureSubjunctive
+    , consequent = charliePassTomorrowSubjunctive
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldPass
     }
 
 -- "If Charlie re-took the test *tomorrow*, Charlie would not pass the test."
 subjunctiveTimeFocusNotPassConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
-    , consequent = charlieNotPassFutureSubjunctive
+    , consequent = charlieNotPassTomorrowSubjunctive
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldNotPass
     }
 
 -- "If Charlie re-took the test *tomorrow*, Charlie would fail the test."
 subjunctiveTimeFocusFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
-    , consequent = charlieFailFutureSubjunctive
+    , consequent = charlieFailTomorrowSubjunctive
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldFail
     }
 
 -- "If Charlie re-took the test *tomorrow*, Charlie wouldn't fail the test."
 subjunctiveTimeFocusNotFailConditional = ParsedConditional {
     antecedent = charlieRetakeTestTomorrowSubjunctive
-    , consequent = charlieNotFailFutureSubjunctive
+    , consequent = charlieNotFailTomorrowSubjunctive
     , fullTree = ifCharlieRetookTheTestTomorrowCharlieWouldNotFail
     }
 
 -- "If Charlie had brought his calculator, Charlie would have passed the test."
 passCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
-    , consequent = charliePassCounterfactual
+    , consequent = charliePassPastCounterfactual
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldHavePassed
     }
 
 -- "If Charlie had brought his calculator, Charlie would not have passed the test."
 notPassCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
-    , consequent = charlieNotPassCounterfactual
+    , consequent = charlieNotPassPastCounterfactual
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldNotHavePassed
     }
 
 -- "If Charlie had brought his calculator, Charlie would have failed the test."
 failCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
-    , consequent = charlieFailCounterfactual
+    , consequent = charlieFailPastCounterfactual
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldHaveFailed
     }
 
 -- "If Charlie had brought his calculator, Charlie wouldn't have failed the test."
 notFailCounterfactual = ParsedConditional {
     antecedent = charlieBringCalculatorPastCounterfactual
-    , consequent = charlieNotFailCounterfactual
+    , consequent = charlieNotFailPastCounterfactual
     , fullTree = ifCharlieHadBroughtHisCalculatorCharlieWouldNotHaveFailed
     }
 
 -- "If Charlie had taken the test *yesterday*, Charlie would have passed the test."
 timeFocusPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
-    , consequent = charliePassCounterfactual
+    , consequent = charliePassYesterdayCounterfactual
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldHavePassed
     }
 
 -- "If Charlie had taken the test *yesterday*, Charlie would not have passed the test."
 timeFocusNotPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
-    , consequent = charlieNotPassCounterfactual
+    , consequent = charlieNotPassYesterdayCounterfactual
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHavePassed
     }
 
 -- "If Charlie had taken the test *yesterday*, Charlie would have failed the test."
 timeFocusFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
-    , consequent = charlieFailCounterfactual
+    , consequent = charlieFailYesterdayCounterfactual
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldHaveFailed
     }
 
 -- "If Charlie had taken the test *yesterday*, Charlie wouldn't have failed the test."
 timeFocusNotFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestYesterdayCounterfactual
-    , consequent = charlieNotFailCounterfactual
+    , consequent = charlieNotFailYesterdayCounterfactual
     , fullTree = ifCharlieHadTakenTheTestYesterdayCharlieWouldNotHaveFailed
     }
 
 -- "If Charlie had taken the test *tomorrow*, Charlie would have passed the test."
 futurePassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
-    , consequent = charliePassCounterfactual
+    , consequent = charliePassTomorrowCounterfactual
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldHavePassed
     }
 
 -- "If Charlie had taken the test *tomorrow*, Charlie would not have passed the test."
 futureNotPassCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
-    , consequent = charlieNotPassCounterfactual
+    , consequent = charlieNotPassTomorrowCounterfactual
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHavePassed
     }
 
 -- "If Charlie had taken the test *tomorrow*, Charlie would have failed the test."
 futureFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
-    , consequent = charlieFailCounterfactual
+    , consequent = charlieFailTomorrowCounterfactual
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldHaveFailed
     }
 
 -- "If Charlie had taken the test *tomorrow*, Charlie would not have failed the test."
 futureNotFailCounterfactual = ParsedConditional {
     antecedent = charlieTakeTestTomorrowCounterfactual
-    , consequent = charlieNotFailCounterfactual
+    , consequent = charlieNotFailTomorrowCounterfactual
     , fullTree = ifCharlieHadTakenTheTestTomorrowCharlieWouldNotHaveFailed
     }
 
@@ -431,12 +431,14 @@ notFailFailSimple = [notFailPastSentence, failPastSentence]
 notFailNotFailSimple = [notFailPastSentence, notFailPastSentence]
 
 
-----------------------------------------
--- Counterfactuals without time focus --
-----------------------------------------
+-------------------------------------
+-- Conditionals without time focus --
+-------------------------------------
 
 passPassNoFocusIndicative = [passPastSentence, indicativeNoFocusPassConditional]
+passNotPassNoFocusIndicative = [passPastSentence, indicativeNoFocusNotPassConditional]
 passPassNoFocusSubjunctive = [passPastSentence, subjunctiveNoFocusPassConditional]
+passNotPassNoFocusSubjunctive = [passPastSentence, subjunctiveNoFocusNotPassConditional]
 
 passPassNoFocusCounterfactual = [passPastSentence, passCounterfactual]
 passNotPassNoFocusCounterfactual = [passPastSentence, notPassCounterfactual]

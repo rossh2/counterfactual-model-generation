@@ -35,15 +35,10 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 ### Model Generation
 
 * What are the felicity judgements for indicative conditionals?
-* Do counterfactuals with no time contrast ("calculator examples") have the same felicity judgements as counterfactuals which change the date of the event?
+* Do counterfactuals with no time contrast ("calculator examples") have the same felicity judgements as counterfactuals which change the date of the event? (I'm fairly sure they do, but check on data.)
 * Should _take_ and _retake_ have the same propositions - i.e. if a model contains the presupposition _Charlie takes the test_ and we add the information _Charlie retakes the test_, does that overwrite the presupposition or does the model contain both? This relates to the issue below about handling (non-)repeatable predicates more nicely.
 
-### Data Structures
-
-* Should times be associated with events or with (parsed) propositions? If with events, do presuppositions (which are modelled as propositions containing events) always have a time and what is it?
-* The time of the consequent of a counterfactual cannot be identified from tense alone, since counterfactuals may play in the past, present or future. Should the data structure reflect this or should it take the time from the antecedent when no temporal adverb is present?
-
-#### Questions for Linguistics
+### Data Structures and Grammar
 
 * What is the correct name for words such as _tomorrow_ and _yesterday_? They're analysed as (pronominal) nouns apparently, but they can occur in places that other nouns cannot and so need to be handled differently in the toy grammar. Do other nouns exist which behave in this way but are not temporal? German has _zuhause_ for _at home_. Should my grammar account for this even if English doesn't have any?
 
@@ -56,7 +51,6 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 * Parse presuppositions - can be somewhat hard-coded if necessary, but handle them somehow
 * Compositional semantics for event meanings, rather than strings
 * Teach model generation that _pass_ and _not fail_ generally have the same truth values, i.e. _Charlie passed. Charlie failed_ is contradictory and should not generate a minimal model. However, when cancelling implicatures this equivalence can only cause the model to crash and not rescue it.
-* Handle presupposition of _Charlie has not taken the test (yet)_ better, so that it conflicts with _Charlie took/passed/failed the test_. See also the note below about repeatability.
 
 ### Nice to Have (Stretch Goals)
 
