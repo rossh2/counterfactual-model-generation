@@ -7,6 +7,7 @@ import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
 
 import Grammar.Features
+import Grammar.Semantics
 import Model.ModelStructures
 import Model.Times
 import Parsing.DataStructures
@@ -57,13 +58,14 @@ generateSimpleModel (ParsedConditional p q sentTree) = case conditionalMood of
     where conditionalMood = mood q
 
 generateTimeContrastModel :: ParsedSentence -> MinimalModel
-generateTimeContrastModel s@(ParsedSimpleSentence p) = generateSimpleModel s -- Simple sentences don't have special behaviour
+generateTimeContrastModel s@(ParsedSimpleSentence p) = generateSimpleModel s -- Simple sentences don't have time contrast behaviour
 generateTimeContrastModel (ParsedConditional p q sentTree) = case conditionalMood of
         Indicative -> MinimalModel {
             actualWorlds = worldsFromProps False $
                 makePresuppositionsAtTime Present p
                 ++ conditionalWithPresupps p q
-                --  ++ (oppositeOutcomePastConditionalWithPresupps p q) -- TODO I don't think we need this - need more data; Starr vaguely supports this
+                -- TODO Confirm that indicative conditionals don't have opposite outcome implicature; Starr vaguely supports this
+                --  ++ (oppositeOutcomePastConditionalWithPresupps p q)
             , possibleWorlds = Map.empty
             }
         Subjunctive -> MinimalModel {
@@ -155,6 +157,8 @@ combineWorlds (Just w) (Just v) = if possible w /= possible v then Nothing else 
           combined = case allProps of Just ps -> Just (World ps (possible w))
                                       Nothing -> Nothing
 
+-- TODO depends on, but does not check that the existing set of props is consistent
+-- (i.e. at most one prop describes the same event)
 addProp :: Prop -> Maybe (Set.Set Prop) -> Maybe (Set.Set Prop)
 addProp q Nothing = Nothing
 addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
@@ -162,11 +166,24 @@ addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
                       else if nothingToDo then Just ps
                       else Nothing
     where matching = Set.filter (\p -> content p == content q) ps
-          --inconsistent = Set.size matching > 1 -- If the set of props is consistent (built by this method), there is at most one match.
-          safeToAdd = null matching
-          cancelExisting = if not safeToAdd then cancellable (Set.elemAt 0 matching) else False -- && not inconsistent
-          nothingToDo = if not safeToAdd then (Set.elemAt 0 matching) == q || (cancellable q && not cancelExisting) else False
+          antonymMatching = Set.filter (\p -> antonymEvent p q) ps
+          antonymSameMeaning = if not (null antonymMatching) then negated (Set.elemAt 0 antonymMatching) /= negated q else False
+          safeToAdd = null matching && null antonymMatching
+          -- Can cancel only if the the meaning is the same, or if the same predicate is used (not the antonym)
+          safeToCancel = not (null matching) || antonymSameMeaning
+          matchedPred = if not (null matching) then Set.elemAt 0 matching
+                        else if not (null antonymMatching) then Set.elemAt 0 antonymMatching
+                        else q -- Dummy value
+          cancelExisting = if safeToCancel then cancellable matchedPred else False
+          nothingToDo = if safeToCancel then cancellable q || matchedPred == q || antonymSameMeaning else False
           newPs = if cancelExisting then Set.delete (Set.elemAt 0 matching) ps else ps
+
+antonymEvent :: Prop -> Prop -> Bool
+antonymEvent p q = case pAntonymPred of Just pAPred -> pEvent { predicate = pAPred } == qEvent
+                                        Nothing     -> False
+    where pEvent = content p
+          qEvent = content q
+          pAntonymPred = (antonymPred . predicate) pEvent
 
 
 --------------------------------------

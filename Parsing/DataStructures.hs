@@ -26,7 +26,7 @@ instance ShowLinear Event where
         where showArguments = (unwords . arguments) e
 
 data Prop = Prop {
-    content :: Event
+    content :: Event -- TODO this should be called 'event'
     , negated :: Bool
     , cancellable :: Bool
 } deriving (Eq, Ord, Show)
