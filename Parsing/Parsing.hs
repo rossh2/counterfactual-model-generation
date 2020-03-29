@@ -59,7 +59,7 @@ parseSimpleSentence tree tp@(TP np vp) = case parsedProp of
 parseProp :: TP -> Maybe Prop
 parseProp tp@(TP np vp) = case parsedEvent of
                             Just pEvent -> Just (Prop {
-                                content = pEvent
+                                event = pEvent
                                 , negated = isVPNegated vp
                                 , cancellable = False
                                 })
@@ -110,9 +110,9 @@ inferConsequentTime (Just p) (Just q) = if antecedentMoreSpecific
                                         then Just (applyTimeToProp (parsedPropTime p) q)
                                       else Just q
     where antecedentMoreSpecific = ((isSpecificTime . parsedPropTime) p && (not . isSpecificTime . parsedPropTime) q)
-                                   || (propTime q) == Unknown -- This is the least specific, anything is better than this
+                                   || (parsedPropTime q) == Unknown -- This is the least specific, anything is better than this
 
 applyTimeToProp :: Time -> ParsedProp -> ParsedProp
 applyTimeToProp t q = q { prop = newProp }
-    where newEvent = ((content . prop) q) { time = t}
-          newProp = (prop q) { content = newEvent }
+    where newEvent = ((event . prop) q) { time = t}
+          newProp = (prop q) { event = newEvent }

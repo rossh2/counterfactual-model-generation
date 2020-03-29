@@ -91,7 +91,7 @@ worldsFromProps possible ps = foldr (addPropToWorlds possible) Map.empty ps
 addPropToWorlds :: Bool -> Prop -> Map.Map Time World -> Map.Map Time World
 addPropToWorlds possible p map = if timeExists then Map.adjust (updateWorld p) pTime map
                                  else Map.insert pTime newWorld map
-    where pTime = (time . content) p
+    where pTime = (time . event) p
           timeExists = Map.member pTime map
           newWorld = World { propositions = Set.singleton p, possible = possible }
 
@@ -122,8 +122,8 @@ makeOppositeOutcomeProp :: ParsedProp -> Prop
 makeOppositeOutcomeProp p = (implicature . negateProp . prop) p
 
 setPropTime :: Time -> Prop -> Prop
-setPropTime time p = p { content = pastEvent }
-    where pastEvent = (content p) { time = time }
+setPropTime time p = p { event = pastEvent }
+    where pastEvent = (event p) { time = time }
 
 -----------------------
 -- MODEL COMBINATION --
@@ -165,7 +165,7 @@ addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
                       else if cancelExisting then Just (Set.insert q newPs)
                       else if nothingToDo then Just ps
                       else Nothing
-    where matching = Set.filter (\p -> content p == content q) ps
+    where matching = Set.filter (\p -> event p == event q) ps
           antonymMatching = Set.filter (\p -> antonymEvent p q) ps
           antonymSameMeaning = if not (null antonymMatching) then negated (Set.elemAt 0 antonymMatching) /= negated q else False
           safeToAdd = null matching && null antonymMatching
@@ -181,8 +181,8 @@ addProp q (Just ps) = if safeToAdd then Just (Set.insert q ps)
 antonymEvent :: Prop -> Prop -> Bool
 antonymEvent p q = case pAntonymPred of Just pAPred -> pEvent { predicate = pAPred } == qEvent
                                         Nothing     -> False
-    where pEvent = content p
-          qEvent = content q
+    where pEvent = event p
+          qEvent = event q
           pAntonymPred = (antonymPred . predicate) pEvent
 
 
@@ -196,14 +196,14 @@ checkTimeContrast (ParsedSimpleSentence p) (Just m) = eventRepetition
     where eventRepetition = isRepeatedEvent p m
 checkTimeContrast (ParsedConditional p q sentTree) (Just m) = conditionalMood == Counterfactual || predicateRepetition || eventRepetition
     where conditionalMood = mood q
-          predicateRepetition = Repetition `elem` (predProps . content . prop) p
+          predicateRepetition = Repetition `elem` (predProps . event . prop) p
           eventRepetition = isRepeatedEvent p m
 
 -- TODO unclear whether this is needed - counterfactual + predicate repetition flag on re-take actually handles all our cases right now
 -- But this is probably needed for the ice-cream case which is naturally repeatable without use of "re-get ice-cream"
 isRepeatedEvent :: ParsedProp -> MinimalModel -> Bool
-isRepeatedEvent pProp m = Set.member event modelActualEvents
-    where event = (content . prop) pProp
+isRepeatedEvent pProp m = Set.member pEvent modelActualEvents
+    where pEvent = (event . prop) pProp
           modelActualProps = Set.unions $ Map.map propositions (actualWorlds m)
-          modelActualEvents = Set.map content modelActualProps
+          modelActualEvents = Set.map event modelActualProps
 

@@ -67,7 +67,7 @@ charlieTakeTestTomorrow = propWithDefaults (Event {
     })
 
 charlieNotTakeTestPast = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "take"
         , arguments = ["the test"]
@@ -111,7 +111,7 @@ charliePassTestTomorrow = propWithDefaults (Event {
     })
 
 charlieNotPassTestPast = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "pass"
         , arguments = ["the test"]
@@ -123,7 +123,7 @@ charlieNotPassTestPast = Prop {
     }
 
 charlieNotPassTestYesterday = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "pass"
         , arguments = ["the test"]
@@ -135,7 +135,7 @@ charlieNotPassTestYesterday = Prop {
     }
 
 charlieNotPassTestTomorrow = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "pass"
         , arguments = ["the test"]
@@ -171,7 +171,7 @@ charlieFailTestTomorrow = propWithDefaults (Event {
     })
 
 charlieNotFailTestPast = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "fail"
         , arguments = ["the test"]
@@ -183,7 +183,7 @@ charlieNotFailTestPast = Prop {
     }
 
 charlieNotFailTestYesterday = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "fail"
         , arguments = ["the test"]
@@ -195,7 +195,7 @@ charlieNotFailTestYesterday = Prop {
     }
 
 charlieNotFailTestTomorrow = Prop {
-    content = Event {
+    event = Event {
         agent = "Charlie"
         , predicate = "fail"
         , arguments = ["the test"]

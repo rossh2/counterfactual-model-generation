@@ -26,24 +26,24 @@ instance ShowLinear Event where
         where showArguments = (unwords . arguments) e
 
 data Prop = Prop {
-    content :: Event -- TODO this should be called 'event'
+    event :: Event -- TODO this should be called 'event'
     , negated :: Bool
     , cancellable :: Bool
 } deriving (Eq, Ord, Show)
 propWithDefaults e = Prop e False False
 
 instance ShowLinear Prop where
-    showLin (Prop content False cancellable) = if cancellable then showContent ++ " (implicature)" else showContent
-        where showContent = showLin content
-    showLin (Prop content True cancellable) = if cancellable then negatedContent ++ " (implicature)" else negatedContent
-        -- In principle, sometimes the first word of `content` should get lowercased (if not a proper noun)
-        where negatedContent = "Not the case that " ++ (showLin content)
+    showLin (Prop event False cancellable) = if cancellable then showEvent ++ " (implicature)" else showEvent
+        where showEvent = showLin event
+    showLin (Prop event True cancellable) = if cancellable then negatedEvent ++ " (implicature)" else negatedEvent
+        -- In principle, sometimes the first word of `event` should get lowercased (if not a proper noun)
+        where negatedEvent = "Not the case that " ++ (showLin event)
 
 negateProp :: Prop -> Prop
-negateProp (Prop content negated cancellable) = Prop content (not negated) cancellable
+negateProp (Prop event negated cancellable) = Prop event (not negated) cancellable
 
 implicature :: Prop -> Prop
-implicature (Prop content negated cancellable) = Prop content negated True
+implicature (Prop event negated cancellable) = Prop event negated True
 
 data ParsedProp = ParsedProp {
     prop :: Prop
@@ -53,7 +53,7 @@ data ParsedProp = ParsedProp {
 } deriving (Show, Eq)
 
 parsedPropTime :: ParsedProp -> Time
-parsedPropTime = time . content . prop
+parsedPropTime = time . event . prop
 
 data ParsedSentence = ParsedSimpleSentence {
         pProp :: ParsedProp
