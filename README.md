@@ -57,7 +57,7 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 * Model repeatability of e.g. test-taking in lexicon (is there a better way than just generating the presupposition of test not taken?) 
 Mesh this nicely with the  `Repetition` flag on _retake_, right now _retake_ is an entirely separate predicate.
 * Teach model generation that any time in past (e.g. _yesterday_) conflicts with the general time `Past` when generating models
-* Handle/check how well mixed time conditionals e.g. _If Charlie went to the review session today, he would pass his test tomorrow_. are handled. (Some of them should be handled now that each event has its own time, but probably not all.)
+* Handle/check how well mixed time conditionals e.g. _If Charlie went to the review session today, he would pass his test tomorrow_. or _If he had gone shopping yesterday, then he would still have food (now/in the future)._ are handled. (Some of them should be handled now that each event has its own time, but certainly the latter doesn't match the heuristic used for consequent times.)
 
 ## Testing & Safety
 
