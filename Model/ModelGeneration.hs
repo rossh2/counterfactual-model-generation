@@ -192,8 +192,9 @@ antonymEvent p q = case pAntonymPred of Just pAPred -> pEvent { predicate = pAPr
 
 checkTimeContrast :: ParsedSentence -> Maybe MinimalModel -> Bool
 checkTimeContrast _ Nothing = False
-checkTimeContrast (ParsedSimpleSentence p) (Just m) = eventRepetition
+checkTimeContrast (ParsedSimpleSentence p) (Just m) = eventRepetition || predicateRepetition
     where eventRepetition = isRepeatedEvent p m
+          predicateRepetition = Repetition `elem` (predProps . event . prop) p
 checkTimeContrast (ParsedConditional p q sentTree) (Just m) = conditionalMood == Counterfactual || predicateRepetition || eventRepetition
     where conditionalMood = mood q
           predicateRepetition = Repetition `elem` (predProps . event . prop) p
