@@ -157,7 +157,6 @@ counterfactualExpected = [
     ]
 
 indicativeTimeFocusExpected = [
-    -- TODO check judgements for indicative - is true that anything goes?
     [
         (passPassIndicative, True) -- Charlie passed the test. If Charlie retakes the test tomorrow, Charlie will pass the test.
         , (passFailIndicative, True) -- Charlie passed the test. If Charlie retakes the test tomorrow, Charlie will fail the test.

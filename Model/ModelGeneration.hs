@@ -64,8 +64,6 @@ generateTimeContrastModel (ParsedConditional p q sentTree) = case conditionalMoo
             actualWorlds = worldsFromProps False $
                 makePresuppositionsAtTime Present p
                 ++ conditionalWithPresupps p q
-                -- TODO Confirm that indicative conditionals don't have opposite outcome implicature; Starr vaguely supports this
-                --  ++ (oppositeOutcomePastConditionalWithPresupps p q)
             , possibleWorlds = Map.empty
             }
         Subjunctive -> MinimalModel {
@@ -157,7 +155,7 @@ combineWorlds (Just w) (Just v) = if possible w /= possible v then Nothing else 
           combined = case allProps of Just ps -> Just (World ps (possible w))
                                       Nothing -> Nothing
 
--- TODO depends on, but does not check that the existing set of props is consistent
+-- Depends on, but does not check that the existing set of props is consistent
 -- (i.e. at most one prop describes the same event)
 addProp :: Prop -> Maybe (Set.Set Prop) -> Maybe (Set.Set Prop)
 addProp q Nothing = Nothing

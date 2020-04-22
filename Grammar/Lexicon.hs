@@ -98,4 +98,3 @@ haveInf = Aux { auxHead = "have", auxRoot = "have", auxEffect = Perfect, auxForm
 notNeg = Neg { negHead = "not" } -- "not" is a Haskell keyword
 
 ifC = C { cHead = "if" } -- "if" is a Haskell keyword
--- TODO do we need e.g. then or silent then? What is the standard syntactic way for modelling conditionals?

@@ -1,6 +1,6 @@
 # Minimal Models for Counterfactuals and Conditionals
 
-This repository contains the code for my 2020 Master's Thesis in CL at Brandeis University. As of March 25, 2020, this is a work in progress which still contains a number of TODOs.
+This repository contains the code for my 2020 Master's Thesis in CL at Brandeis University. As of April 22, 2020, this work is in a provisionally completed state but could still be improved with a number of extensions and fixes, most notably adding presupposition parsing.
 
 This Haskell codebase shows how to generate minimal models for conditionals of three types: indicative, subjunctive and counterfactual (subjunctive past).
 Specifically, it focuses on the distinction of whether the conditional deals with a pair of events at different times which contrast, i.e. the 'same event' has different outcomes.
@@ -34,8 +34,6 @@ In the future, `Main.hs` will provide a convenient entry point to the whole code
 
 ### Model Generation
 
-* What are the felicity judgements for indicative conditionals?
-* Do counterfactuals with no time contrast ("calculator examples") have the same felicity judgements as counterfactuals which change the date of the event? (I'm fairly sure they do, but check on data.)
 * Should _take_ and _retake_ have the same propositions - i.e. if a model contains the presupposition _Charlie takes the test_ and we add the information _Charlie retakes the test_, does that overwrite the presupposition or does the model contain both? This relates to the issue below about handling (non-)repeatable predicates more nicely.
 
 ### Data Structures and Grammar
