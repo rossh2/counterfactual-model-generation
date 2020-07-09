@@ -80,7 +80,7 @@ charlieNotTakeTestPast = Prop {
 
 charlieRetakeTestTomorrow = propWithDefaults (Event {
     agent = "Charlie"
-    , predicate = "retake" -- TODO is this the same or not as "Charlie take(s) the test"? In model generation, should we get [take, retake] as separate propositions
+    , predicate = "retake"
     , arguments = ["the test"]
     , time = DeltaInDays 1
     , predProps = [Repetition]

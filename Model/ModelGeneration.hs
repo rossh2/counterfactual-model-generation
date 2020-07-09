@@ -198,8 +198,6 @@ checkTimeContrast (ParsedConditional p q sentTree) (Just m) = conditionalMood ==
           predicateRepetition = Repetition `elem` (predProps . event . prop) p
           eventRepetition = isRepeatedEvent p m
 
--- TODO unclear whether this is needed - counterfactual + predicate repetition flag on re-take actually handles all our cases right now
--- But this is probably needed for the ice-cream case which is naturally repeatable without use of "re-get ice-cream"
 isRepeatedEvent :: ParsedProp -> MinimalModel -> Bool
 isRepeatedEvent pProp m = Set.member pEvent modelActualEvents
     where pEvent = (event . prop) pProp

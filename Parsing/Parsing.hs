@@ -101,7 +101,7 @@ parseMood vp = auxEffectsToMood (getAuxEffects vp)
 parsePresupps :: TP -> [Prop]
 parsePresupps (TP np vp) = [] -- TODO implement presupposition parsing
 
--- TODO This is a heuristic: will be incorrect for mixed time conditionals such as
+-- This is a heuristic: will be incorrect for mixed time conditionals such as
 -- "If he had gone shopping yesterday, then he would still have food (now/in the future)."
 inferConsequentTime :: Maybe ParsedProp -> Maybe ParsedProp -> Maybe ParsedProp
 inferConsequentTime p Nothing = Nothing -- No consequent, nothing to fix

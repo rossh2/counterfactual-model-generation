@@ -11,7 +11,6 @@ import Model.Times
 import Utils.TypeClasses
 
 -- Rough implementation of Davidsonian events, with some extras (predicate properties)
--- TODO in the long term, event components shouldn't be strings but of e.g. lambda-expressions for meaning
 data Event = Event {
     agent :: String
     , predicate :: String

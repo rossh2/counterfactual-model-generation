@@ -1,6 +1,6 @@
-# Minimal Models for Counterfactuals and Conditionals
+# Minimal Models for Conditionals
 
-This repository contains the code for my 2020 Master's Thesis in CL at Brandeis University. As of April 22, 2020, this work is in a provisionally completed state but could still be improved with a number of extensions and fixes, most notably adding presupposition parsing.
+This repository contains the code for my 2020 Master's Thesis in Computational Linguistics at Brandeis University. The full thesis is available at the [Brandeis Institutional Repository](http://bir.brandeis.edu/handle/10192/3752); a shorter paper (and poster) presented at WeSSLLI 2020 is available on [OSF](https://osf.io/jpqad/).
 
 This Haskell codebase shows how to generate minimal models for conditionals of three types: indicative, subjunctive and counterfactual (subjunctive past).
 Specifically, it focuses on the distinction of whether the conditional deals with a pair of events at different times which contrast, i.e. the 'same event' has different outcomes.
@@ -27,43 +27,3 @@ Examples for these data structures, including fully parsed sentences enumerating
 Finally, model generation is located in `Model`: it declares the structure of the model in `ModelStructures.hs`, with time handling split out into a separate module `Times.hs` for ease of importing (and because there is a lot of verbose mapping code related to time and tenses). Model generation occurs in `ModelGeneration.hs`, which has two primary methods: one to generate minimal models for sentences, and another to combine two models. This is tested in `Test/ModelGenerationTests.hs`, which exhaustively tests that a minimal model is either generated or not for all the possible felicitous and infelicitous conditional discourse examples involving _pass_ and _fail_. 
 
 In the future, `Main.hs` will provide a convenient entry point to the whole codebase to pass in a sentence and view the generated model, but right now the two test classes are the best way to interact with the code.
-
-# Remaining Work
-
-## Fundamental Questions
-
-### Model Generation
-
-* Should _take_ and _retake_ have the same propositions - i.e. if a model contains the presupposition _Charlie takes the test_ and we add the information _Charlie retakes the test_, does that overwrite the presupposition or does the model contain both? This relates to the issue below about handling (non-)repeatable predicates more nicely.
-
-### Data Structures and Grammar
-
-* What is the correct name for words such as _tomorrow_ and _yesterday_? They're analysed as (pronominal) nouns apparently, but they can occur in places that other nouns cannot and so need to be handled differently in the toy grammar. Do other nouns exist which behave in this way but are not temporal? German has _zuhause_ for _at home_. Should my grammar account for this even if English doesn't have any?
-
-## Missing Implementation
-
-### Must Have
-
-### Should Have
-
-* Parse presuppositions - can be somewhat hard-coded if necessary, but handle them somehow
-* Compositional semantics for event meanings, rather than strings
-
-### Nice to Have (Stretch Goals)
-
-* Handle special accommodation options for _didn't fail_
-* Model repeatability of e.g. test-taking in lexicon (is there a better way than just generating the presupposition of test not taken?) 
-Mesh this nicely with the  `Repetition` flag on _retake_, right now _retake_ is an entirely separate predicate.
-* Teach model generation that any time in past (e.g. _yesterday_) conflicts with the general time `Past` when generating models
-* Handle/check how well mixed time conditionals e.g. _If Charlie went to the review session today, he would pass his test tomorrow_. or _If he had gone shopping yesterday, then he would still have food (now/in the future)._ are handled. (Some of them should be handled now that each event has its own time, but certainly the latter doesn't match the heuristic used for consequent times.)
-* Handle expanding event horizon / reverse Sobel sequences
-
-## Testing & Safety
-
-* In `ModelGeneration > addProp`, consider checking whether set of props is actually consistent rather than just relying on the first match being the only match
-
-* Unit tests for specific model generation
-* Add ice-cream examples to unit tests
-* Add _not taken yet_ examples to unit tests
-* Unit tests for `combineModels` specifically? (Or handle only by checking felicity for discourses, which calls this)
-* Update `Main.hs` to be a useful interface (separate to `ParsingTests.hs` and `ModelGenerationTests.hs`)
